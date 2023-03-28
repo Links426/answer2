@@ -14,48 +14,6 @@ function makeMap(str, expectsLowerCase) {
   }
   return expectsLowerCase ? (val) => !!map[val.toLowerCase()] : (val) => !!map[val];
 }
-function normalizeClass(value) {
-  let res = "";
-  if (isString(value)) {
-    res = value;
-  } else if (isArray(value)) {
-    for (let i = 0; i < value.length; i++) {
-      const normalized = normalizeClass(value[i]);
-      if (normalized) {
-        res += normalized + " ";
-      }
-    }
-  } else if (isObject(value)) {
-    for (const name in value) {
-      if (value[name]) {
-        res += name + " ";
-      }
-    }
-  }
-  return res.trim();
-}
-const toDisplayString = (val) => {
-  return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
-};
-const replacer = (_key, val) => {
-  if (val && val.__v_isRef) {
-    return replacer(_key, val.value);
-  } else if (isMap(val)) {
-    return {
-      [`Map(${val.size})`]: [...val.entries()].reduce((entries, [key, val2]) => {
-        entries[`${key} =>`] = val2;
-        return entries;
-      }, {})
-    };
-  } else if (isSet(val)) {
-    return {
-      [`Set(${val.size})`]: [...val.values()]
-    };
-  } else if (isObject(val) && !isArray(val) && !isPlainObject$1(val)) {
-    return String(val);
-  }
-  return val;
-};
 const EMPTY_OBJ = Object.freeze({});
 const EMPTY_ARR = Object.freeze([]);
 const NOOP = () => {
@@ -123,8 +81,8 @@ const def = (obj, key, value) => {
   });
 };
 const toNumber = (val) => {
-  const n2 = parseFloat(val);
-  return isNaN(n2) ? val : n2;
+  const n = parseFloat(val);
+  return isNaN(n) ? val : n;
 };
 const LINEFEED = "\n";
 const SLOT_DEFAULT_NAME = "d";
@@ -459,9 +417,9 @@ function assertType$1(value, type) {
   let valid;
   const expectedType = getType$1(type);
   if (isSimpleType$1(expectedType)) {
-    const t2 = typeof value;
-    valid = t2 === expectedType.toLowerCase();
-    if (!valid && t2 === "object") {
+    const t = typeof value;
+    valid = t === expectedType.toLowerCase();
+    if (!valid && t === "object") {
       valid = value instanceof type;
     }
   } else if (expectedType === "Object") {
@@ -942,7 +900,7 @@ const $off = defineSyncApi(API_OFF, (name, callback) => {
   }
   if (!isArray(name))
     name = [name];
-  name.forEach((n2) => emitter.off(n2, callback));
+  name.forEach((n) => emitter.off(n, callback));
 }, OffProtocol);
 const $emit = defineSyncApi(API_EMIT, (name, ...args) => {
   emitter.emit(name, ...args);
@@ -3311,9 +3269,9 @@ const PublicInstanceProxyHandlers = {
     }
     let normalizedProps;
     if (key[0] !== "$") {
-      const n2 = accessCache[key];
-      if (n2 !== void 0) {
-        switch (n2) {
+      const n = accessCache[key];
+      if (n !== void 0) {
+        switch (n) {
           case 1:
             return setupState[key];
           case 2:
@@ -4080,7 +4038,7 @@ function isSameType(a, b) {
 }
 function getTypeIndex(type, expectedTypes) {
   if (isArray(expectedTypes)) {
-    return expectedTypes.findIndex((t2) => isSameType(t2, type));
+    return expectedTypes.findIndex((t) => isSameType(t, type));
   } else if (isFunction(expectedTypes)) {
     return isSameType(expectedTypes, type) ? 0 : -1;
   }
@@ -4128,9 +4086,9 @@ function assertType(value, type) {
   let valid;
   const expectedType = getType(type);
   if (isSimpleType(expectedType)) {
-    const t2 = typeof value;
-    valid = t2 === expectedType.toLowerCase();
-    if (!valid && t2 === "object") {
+    const t = typeof value;
+    valid = t === expectedType.toLowerCase();
+    if (!valid && t === "object") {
       valid = value instanceof type;
     }
   } else if (expectedType === "Object") {
@@ -4882,14 +4840,14 @@ function findComponentPublicInstance(mpComponents, id) {
   }
   return null;
 }
-function setTemplateRef({ r, f: f2 }, refValue, setupState) {
+function setTemplateRef({ r, f }, refValue, setupState) {
   if (isFunction(r)) {
     r(refValue, {});
   } else {
     const _isString = isString(r);
     const _isRef = isRef(r);
     if (_isString || _isRef) {
-      if (f2) {
+      if (f) {
         if (!_isRef) {
           return;
         }
@@ -5359,126 +5317,6 @@ function getCreateApp() {
     return my[method];
   }
 }
-function vOn(value, key) {
-  const instance = getCurrentInstance();
-  const ctx = instance.ctx;
-  const extraKey = typeof key !== "undefined" && (ctx.$mpPlatform === "mp-weixin" || ctx.$mpPlatform === "mp-qq") && (isString(key) || typeof key === "number") ? "_" + key : "";
-  const name = "e" + instance.$ei++ + extraKey;
-  const mpInstance = ctx.$scope;
-  if (!value) {
-    delete mpInstance[name];
-    return name;
-  }
-  const existingInvoker = mpInstance[name];
-  if (existingInvoker) {
-    existingInvoker.value = value;
-  } else {
-    mpInstance[name] = createInvoker(value, instance);
-  }
-  return name;
-}
-function createInvoker(initialValue, instance) {
-  const invoker = (e) => {
-    patchMPEvent(e);
-    let args = [e];
-    if (e.detail && e.detail.__args__) {
-      args = e.detail.__args__;
-    }
-    const eventValue = invoker.value;
-    const invoke = () => callWithAsyncErrorHandling(patchStopImmediatePropagation(e, eventValue), instance, 5, args);
-    const eventTarget = e.target;
-    const eventSync = eventTarget ? eventTarget.dataset ? eventTarget.dataset.eventsync === "true" : false : false;
-    if (bubbles.includes(e.type) && !eventSync) {
-      setTimeout(invoke);
-    } else {
-      const res = invoke();
-      if (e.type === "input" && (isArray(res) || isPromise(res))) {
-        return;
-      }
-      return res;
-    }
-  };
-  invoker.value = initialValue;
-  return invoker;
-}
-const bubbles = [
-  "tap",
-  "longpress",
-  "longtap",
-  "transitionend",
-  "animationstart",
-  "animationiteration",
-  "animationend",
-  "touchforcechange"
-];
-function patchMPEvent(event) {
-  if (event.type && event.target) {
-    event.preventDefault = NOOP;
-    event.stopPropagation = NOOP;
-    event.stopImmediatePropagation = NOOP;
-    if (!hasOwn(event, "detail")) {
-      event.detail = {};
-    }
-    if (hasOwn(event, "markerId")) {
-      event.detail = typeof event.detail === "object" ? event.detail : {};
-      event.detail.markerId = event.markerId;
-    }
-    if (isPlainObject$1(event.detail) && hasOwn(event.detail, "checked") && !hasOwn(event.detail, "value")) {
-      event.detail.value = event.detail.checked;
-    }
-    if (isPlainObject$1(event.detail)) {
-      event.target = extend({}, event.target, event.detail);
-    }
-  }
-}
-function patchStopImmediatePropagation(e, value) {
-  if (isArray(value)) {
-    const originalStop = e.stopImmediatePropagation;
-    e.stopImmediatePropagation = () => {
-      originalStop && originalStop.call(e);
-      e._stopped = true;
-    };
-    return value.map((fn) => (e2) => !e2._stopped && fn(e2));
-  } else {
-    return value;
-  }
-}
-function vFor(source, renderItem) {
-  let ret;
-  if (isArray(source) || isString(source)) {
-    ret = new Array(source.length);
-    for (let i = 0, l = source.length; i < l; i++) {
-      ret[i] = renderItem(source[i], i, i);
-    }
-  } else if (typeof source === "number") {
-    if (!Number.isInteger(source)) {
-      warn$1(`The v-for range expect an integer value but got ${source}.`);
-      return [];
-    }
-    ret = new Array(source);
-    for (let i = 0; i < source; i++) {
-      ret[i] = renderItem(i + 1, i, i);
-    }
-  } else if (isObject(source)) {
-    if (source[Symbol.iterator]) {
-      ret = Array.from(source, (item, i) => renderItem(item, i, i));
-    } else {
-      const keys = Object.keys(source);
-      ret = new Array(keys.length);
-      for (let i = 0, l = keys.length; i < l; i++) {
-        const key = keys[i];
-        ret[i] = renderItem(source[key], key, i);
-      }
-    }
-  } else {
-    ret = [];
-  }
-  return ret;
-}
-const o = (value, key) => vOn(value, key);
-const f = (source, renderItem) => vFor(source, renderItem);
-const n = (value) => normalizeClass(value);
-const t = (val) => toDisplayString(val);
 function createApp$1(rootComponent, rootProps = null) {
   rootComponent && (rootComponent.mpType = "app");
   return createVueApp(rootComponent, rootProps).use(plugin);
@@ -6285,8 +6123,8 @@ let activePinia;
 const setActivePinia = (pinia) => activePinia = pinia;
 const getActivePinia = () => getCurrentInstance() && inject(piniaSymbol) || activePinia;
 const piniaSymbol = Symbol("pinia");
-function isPlainObject(o2) {
-  return o2 && typeof o2 === "object" && Object.prototype.toString.call(o2) === "[object Object]" && typeof o2.toJSON !== "function";
+function isPlainObject(o) {
+  return o && typeof o === "object" && Object.prototype.toString.call(o) === "[object Object]" && typeof o.toJSON !== "function";
 }
 var MutationType;
 (function(MutationType2) {
@@ -6476,8 +6314,8 @@ function shouldHydrate(obj) {
   return !isPlainObject(obj) || !obj.hasOwnProperty(skipHydrateSymbol);
 }
 const { assign } = Object;
-function isComputed(o2) {
-  return !!(isRef(o2) && o2.effect);
+function isComputed(o) {
+  return !!(isRef(o) && o.effect);
 }
 function createOptionsStore(id, options, pinia, hot) {
   const { state, actions, getters } = options;
@@ -7019,16 +6857,6 @@ exports._export_sfc = _export_sfc;
 exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
 exports.defineComponent = defineComponent;
-exports.defineStore = defineStore;
-exports.f = f;
-exports.index = index;
-exports.n = n;
-exports.o = o;
 exports.onHide = onHide;
 exports.onLaunch = onLaunch;
 exports.onShow = onShow;
-exports.reactive = reactive;
-exports.ref = ref;
-exports.storeToRefs = storeToRefs;
-exports.t = t;
-exports.unref = unref;

@@ -1,7 +1,4 @@
 {
   "navigationStyle": "custom",
-  "usingComponents": {
-    "status-bar": "../../components/statusBar",
-    "index-image": "./components/index-image"
-  }
+  "usingComponents": {}
 }

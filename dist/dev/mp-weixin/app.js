@@ -23,7 +23,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     };
   }
 });
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/xlin/\u5B66\u4E60\u8D44\u65992/hellCat/HELLCAT_MARK2/src/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/xlin/Desktop/mycode/\u65B0\u5C0F\u7A0B\u5E8F/answerTo/src/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
   app.use(common_vendor.createPinia());
