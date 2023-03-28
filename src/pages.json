@@ -1,0 +1,65 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "广大猫阁",
+        "navigationBarBackgroundColor": "#598DF9",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/index/index-detail",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "关于",
+        "navigationBarBackgroundColor": "#598DF9",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/discover/discover",
+      "style": {
+        "navigationBarTitleText": "广大猫阁",
+        "navigationBarBackgroundColor": "#598DF9",
+        "navigationBarTextStyle": "white"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#979797",
+    "selectedColor": "#598DF9",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "./static/icon-imgs/index.png",
+        "selectedIconPath": "./static/icon-imgs/indexSel.png"
+      },
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "图鉴",
+        "iconPath": "./static/icon-imgs/discover.png",
+        "selectedIconPath": "./static/icon-imgs/discoverSel.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "./static/icon-imgs/mine.png",
+        "selectedIconPath": "./static/icon-imgs/mineSel.png"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
+}

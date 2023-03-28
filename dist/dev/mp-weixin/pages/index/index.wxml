@@ -1,0 +1,1 @@
+<view class="w-full bg-_wn_F7F7F9 min-h-800rpx pt-28rpx flex flex-col items-center"><input class="font w-640rpx h-60rpx bg-white rounded-36rpx text-24rpx text-_wn_777777 pl-36rpx mb-44rpx" placeholder="搜索猫猫名字"/><index-message-block u-i="40676e0f-0" bind:__l="__l"/></view>

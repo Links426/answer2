@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/index-detail",
+    "pages/mine/mine",
+    "pages/discover/discover"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#979797",
+    "selectedColor": "#598DF9",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "./static/icon-imgs/index.png",
+        "selectedIconPath": "./static/icon-imgs/indexSel.png"
+      },
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "图鉴",
+        "iconPath": "./static/icon-imgs/discover.png",
+        "selectedIconPath": "./static/icon-imgs/discoverSel.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "./static/icon-imgs/mine.png",
+        "selectedIconPath": "./static/icon-imgs/mineSel.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

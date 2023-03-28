@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "广大猫阁",
+  "navigationBarBackgroundColor": "#598DF9",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "index-message-block": "./components/index-messageBlock"
+  }
+}
