@@ -1,0 +1,28 @@
+
+.carousel.data-v-83a5a03c {
+	width: 100%;
+	height: 320rpx;
+	background-image: url('https://p.ipic.vip/v0144p.jpeg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+.nav-select.data-v-83a5a03c {
+	display: flex;
+	height: 104rpx;
+	padding: 36rpx 0 0 28rpx;
+	background: #fff;
+	border-bottom: 1px solid #e7e9ed;
+}
+.nav-select-option.data-v-83a5a03c {
+	color: #1d2128;
+	padding-bottom: 22rpx;
+	font-weight: bold;
+	height: 100%;
+	border-bottom: 2px solid #4080ff;
+}
+.scroll-content.data-v-83a5a03c {
+	flex: 1;
+	overflow: scroll;
+	background-color: #f7f8fa;
+}

@@ -3,9 +3,11 @@ Object.defineProperties(exports, { __esModule: { value: true }, [Symbol.toString
 const common_vendor = require("./common/vendor.js");
 if (!Math) {
   "./pages/index/index.js";
-  "./pages/index/index-detail.js";
+  "./pages/message/message.js";
   "./pages/mine/mine.js";
-  "./pages/discover/discover.js";
+  "./pagesSub/course/course.js";
+  "./pagesSub/classroom/classroom.js";
+  "./pagesSub/question/question.js";
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "App",

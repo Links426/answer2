@@ -1,1 +1,1 @@
-<view></view>
+<view class="h-100vh pt-32rpx flex flex-col items-center bg-_wn_F7F8FA data-v-d41d38da"><mine-card wx:if="{{a}}" class="mb-56rpx data-v-d41d38da" u-i="d41d38da-0" bind:__l="__l" u-p="{{a}}"/><mine-setting wx:if="{{b}}" class="data-v-d41d38da" u-i="d41d38da-1" bind:__l="__l" u-p="{{b}}"/></view>

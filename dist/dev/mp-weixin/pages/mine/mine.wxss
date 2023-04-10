@@ -1,0 +1,7 @@
+
+.mine-button.data-v-d41d38da {
+	font-size: 24rpx;
+	padding: 12rpx 20rpx;
+	border: 2rpx solid #c2c7f3;
+	border-radius: 8rpx;
+}

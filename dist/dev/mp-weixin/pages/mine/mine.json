@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "我的",
+  "usingComponents": {
+    "mine-card": "./components/mine-card",
+    "mine-setting": "./components/mine-setting"
+  }
 }

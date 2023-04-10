@@ -1,8 +1,28 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const _sfc_main = {};
-function _sfc_render(_ctx, _cache) {
-  return {};
+if (!Math) {
+  (MineCard + MineSetting)();
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/xlin/Desktop/mycode/\u65B0\u5C0F\u7A0B\u5E8F/answerTo/src/pages/mine/mine.vue"]]);
+const MineCard = () => "./components/mine-card.js";
+const MineSetting = () => "./components/mine-setting.js";
+const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
+  __name: "mine",
+  setup(__props) {
+    return (_ctx, _cache) => {
+      return {
+        a: common_vendor.p({
+          ["mb-56rpx"]: true,
+          name: "links",
+          ["class-name"]: "\u5DE5\u5546213",
+          ["avater-url"]: "https://p.ipic.vip/v0144p.jpeg"
+        }),
+        b: common_vendor.p({
+          ["icon-name"]: "icon-shezhi",
+          content: "\u8BBE\u7F6E"
+        })
+      };
+    };
+  }
+});
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d41d38da"], ["__file", "/Users/xlin/Desktop/mycode/\u65B0\u5C0F\u7A0B\u5E8F/answerTo/src/pages/mine/mine.vue"]]);
 wx.createPage(MiniProgramPage);
