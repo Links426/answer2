@@ -1,5 +1,5 @@
 <template>
-	<view class="classroom-question">
+	<view class="classroom-question" @click="emit('my-click', id)">
 		<view class="w-full h-150rpx bg-#6AA1FF rounded-t-8rpx p-28rpx text-white">
 			<view flex justify-between>
 				<view><view mb-14rpx>Hello,你有新的习题</view> <view>第 1 题</view></view>
@@ -12,7 +12,12 @@
 		>
 	</view>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps<{ id: number }>()
+const emit = defineEmits<{
+	(e: 'my-click', id: number): void
+}>()
+</script>
 
 <style scoped>
 .classroom-question {
