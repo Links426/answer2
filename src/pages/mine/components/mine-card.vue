@@ -5,7 +5,7 @@
 				><view>{{ name }}</view>
 				<view class="ml-20rpx text-#C2C7F3">{{ className }}</view></view
 			>
-			<MineButton :content="'编辑个人资料'"></MineButton>
+			<MineButton :content="'登陆'"></MineButton>
 		</view>
 		<view h-full>
 			<view
@@ -17,11 +17,18 @@
 </template>
 <script setup lang="ts">
 import MineButton from '@/pages/mine/components/mine-button.vue'
-defineProps<{
-	name: string
-	className: string
-	avaterUrl: string
-}>()
+withDefaults(
+	defineProps<{
+		name: string
+		className: string
+		avaterUrl: string
+	}>(),
+	{
+		name: '未知用户',
+		className: '未知班级',
+		avaterUrl: 'https://p.ipic.vip/v0144p.jpeg',
+	}
+)
 </script>
 
 <style scoped>
