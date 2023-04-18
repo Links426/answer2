@@ -8,18 +8,24 @@
 		/>
 		<MineSetting :icon-name="'icon-shezhi'" :content="'设置'" mb-24rpx />
 		<button @click="test">123</button>
+		<button class="dialog-btn" open-type="getUserInfo" @click="test">
+			获取用户信息
+		</button>
 	</view>
 </template>
 <script setup lang="ts">
-import { getUserCode } from '@/api/users/login'
+import { getProfile, getUserCode } from '@/api/users/login'
 import { get, post } from '@/api/request'
 import MineCard from '@/pages/mine/components/mine-card.vue'
 import MineSetting from '@/pages/mine/components/mine-setting.vue'
 
-const test = () => {
-	getUserCode().then((res) => console.log(res))
-	get('/login', { code: '0e1dVS0w3Up0u03Z8Q3w3itu6I2dVS0M' })
-	console.log(uni.getStorageSync('USER-TOKEN'))
+const test = async () => {
+	// await getUserCode().then((res) => console.log(res))
+	await getProfile().then((res) => {
+		console.log(res)
+	})
+	// await get('/login', { code: '0e1dVS0w3Up0u03Z8Q3w3itu6I2dVS0M' })
+	// console.log(uni.getStorageSync('USER-TOKEN'))
 }
 </script>
 
