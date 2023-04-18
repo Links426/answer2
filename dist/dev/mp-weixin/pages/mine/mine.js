@@ -1,8 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_users_login = require("../../api/users/login.js");
-const api_request = require("../../api/request.js");
-require("../../config/config.js");
 if (!Math) {
   (MineCard + MineSetting)();
 }
@@ -11,10 +9,10 @@ const MineSetting = () => "./components/mine-setting.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "mine",
   setup(__props) {
-    const test = () => {
-      api_users_login.getUserCode().then((res) => console.log(res));
-      api_request.get("/login", { code: "0e1dVS0w3Up0u03Z8Q3w3itu6I2dVS0M" });
-      console.log(common_vendor.index.getStorageSync("USER-TOKEN"));
+    const test = async () => {
+      await api_users_login.getProfile().then((res) => {
+        console.log(res);
+      });
     };
     return (_ctx, _cache) => {
       return {
@@ -29,7 +27,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           content: "\u8BBE\u7F6E",
           ["mb-24rpx"]: true
         }),
-        c: common_vendor.o(test)
+        c: common_vendor.o(test),
+        d: common_vendor.o(test)
       };
     };
   }

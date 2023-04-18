@@ -1,4 +1,3 @@
-import { resolve } from 'path'
 import BaseRequestConfig from '@/config/config'
 
 type RequestData<T> = {
@@ -28,12 +27,6 @@ type Request = <T extends AnyObject, R extends AnyObject = AnyObject>(
 
 export const TOKEN_KEY = 'USER-TOKEN'
 
-const requestList: Map<string, UniApp.RequestTask> = new Map()
-
-let loadingBox: null | (() => null) = null
-
-const createKey = (path: string, data: any) => `${JSON.stringify(data)}${path}`
-
 export const RequestMethod: Request = (
 	{ methodType = 'GET', data = {}, url = '' },
 	{
@@ -55,7 +48,6 @@ export const RequestMethod: Request = (
 		url: `${baseUrl}:${port}${prefix}${url}`,
 	})
 	return new Promise((resolve, reject) => {
-		const requestKey = createKey(url, data)
 		const requestClose = uni.request({
 			url: `${baseUrl}:${port}${url}`,
 			data,
@@ -79,15 +71,7 @@ export const RequestMethod: Request = (
 			fail: (err) => {
 				reject(err)
 			},
-			complete: () => {
-				requestList.delete(requestKey)
-				if (loadingBox !== null && requestList.size === 0) {
-					loadingBox = loadingBox()
-				}
-			},
 		})
-		requestList.get(requestKey)?.abort()
-		requestList.set(requestKey, requestClose)
 	})
 }
 
