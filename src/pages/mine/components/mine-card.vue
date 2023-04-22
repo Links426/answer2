@@ -5,7 +5,7 @@
 				><view>{{ name }}</view>
 				<view class="ml-20rpx text-#C2C7F3">{{ className }}</view></view
 			>
-			<MineButton :content="'登陆'"></MineButton>
+			<MineButton :content="'登陆'" @my-click="userLogin" v-if="!isLogin"></MineButton>
 		</view>
 		<view h-full>
 			<view
@@ -16,7 +16,15 @@
 	</view>
 </template>
 <script setup lang="ts">
+import { getUserInfo } from '@/api/users/login'
+import { getUserCode, getUserToken } from '@/api/users/login'
+
 import MineButton from '@/pages/mine/components/mine-button.vue'
+import { userStore } from '@/stores/userStore'
+
+const useUserStore = userStore()
+const { isLogin, userInfo } = storeToRefs(useUserStore)
+
 withDefaults(
 	defineProps<{
 		name: string
@@ -29,6 +37,15 @@ withDefaults(
 		avaterUrl: 'https://p.ipic.vip/v0144p.jpeg',
 	}
 )
+
+const userLogin = async () => {
+	await getUserInfo()
+	const code = (await getUserCode()) as string
+	if (code) {
+		await getUserToken(code)
+		uni.setStorageSync('USER_INFO', userInfo.value)
+	}
+}
 </script>
 
 <style scoped>
