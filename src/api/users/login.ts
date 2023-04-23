@@ -1,3 +1,8 @@
+import { post } from '@/api/request'
+import { userStore } from '@/stores/userStore'
+
+const useUserStore = userStore()
+const { userInfo, isLogin } = storeToRefs(useUserStore)
 export const getUserCode = () => {
 	return new Promise((resolve) => {
 		uni.login({
@@ -11,19 +16,28 @@ export const getUserCode = () => {
 	})
 }
 
-export const getProfile = (): Promise<UniApp.GetUserProfileRes> => {
-	return new Promise((resolve, reject) => {
-		uni.getUserProfile({
-			desc: '你的授权信息',
-			success: (res) => {
-				resolve(res)
-				showToast('登陆成功')
-			},
-			fail: (err) => {
-				console.log(err)
-				reject(null)
-			},
-		})
+export interface ITokenRes {
+	code: number
+	data: string
+	msg: string
+}
+
+export const getUserToken = async (code: string) => {
+	return await post<ITokenRes>('/login', { code }).then((res) => {
+		uni.setStorageSync('TOKEN_KEY', res.data)
+		showToast('登陆成功')
+		isLogin.value = true
+		uni.setStorageSync('isLogin', isLogin.value)
+	})
+}
+
+export const getUserInfo = async () => {
+	return uni.getUserProfile({
+		desc: '获取你的昵称、头像、地区及性别',
+		success: (res) => {
+			userInfo.value = res.userInfo
+			console.log(userInfo.value)
+		},
 	})
 }
 

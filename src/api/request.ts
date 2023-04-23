@@ -33,12 +33,13 @@ export const RequestMethod: Request = (
 		baseUrl = BaseRequestConfig.baseUrl,
 		port = BaseRequestConfig.port,
 		prefix = BaseRequestConfig.prefix,
-		header = {},
+		header = { 'content-type': 'application/x-www-form-urlencoded' },
 		loading = true,
 		dataType = 'json',
 	} = {}
 ) => {
 	const token = uni.getStorageSync(TOKEN_KEY)
+
 	if (token) {
 		header.Authorization = token
 	}

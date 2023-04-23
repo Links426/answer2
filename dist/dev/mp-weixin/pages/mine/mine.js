@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const api_users_login = require("../../api/users/login.js");
+const stores_userStore = require("../../stores/userStore.js");
 if (!Math) {
   (MineCard + MineSetting)();
 }
@@ -9,26 +9,29 @@ const MineSetting = () => "./components/mine-setting.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "mine",
   setup(__props) {
-    const test = async () => {
-      await api_users_login.getProfile().then((res) => {
-        console.log(res);
-      });
-    };
+    const useUserStore = stores_userStore.userStore();
+    const { userInfo, isLogin } = common_vendor.storeToRefs(useUserStore);
+    common_vendor.onLoad(() => {
+      const info = common_vendor.index.getStorageSync("USER_INFO");
+      if (info && isLogin) {
+        userInfo.value = info;
+        isLogin.value = true;
+      }
+    });
     return (_ctx, _cache) => {
+      var _a, _b;
       return {
         a: common_vendor.p({
           ["mb-56rpx"]: true,
-          name: "\u672A\u77E5\u7528\u6237",
+          name: (_a = common_vendor.unref(userInfo)) == null ? void 0 : _a.nickName,
           ["class-name"]: "\u672A\u77E5\u73ED\u7EA7",
-          ["avater-url"]: "https://p.ipic.vip/v0144p.jpeg"
+          ["avater-url"]: (_b = common_vendor.unref(userInfo)) == null ? void 0 : _b.avatarUrl
         }),
         b: common_vendor.p({
           ["icon-name"]: "icon-shezhi",
           content: "\u8BBE\u7F6E",
           ["mb-24rpx"]: true
-        }),
-        c: common_vendor.o(test),
-        d: common_vendor.o(test)
+        })
       };
     };
   }
