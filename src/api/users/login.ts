@@ -1,4 +1,5 @@
 import { post } from '@/api/request'
+import { isNull } from '@/hooks/isNull'
 import { IUserInfo, userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
@@ -21,16 +22,22 @@ export interface ITokenRes {
 	data: string
 	msg: string
 	openID: string
-	userInfo: Object
+	userInfo: Array<IUserInfo> | null
 }
 
 export const getUserToken = async (code: string) => {
 	return await post<ITokenRes>('/login', { code }).then((res) => {
 		uni.setStorageSync('TOKEN_KEY', res.data.data)
-		userInfo.value.openID = res.data.openID
+		if (isNull(res.data.userInfo)) {
+			userInfo.value.openID = res.data.openID
+		} else {
+			userInfo.value = res.data.userInfo![0]
+		}
+
 		showToast('登陆成功')
 		isLogin.value = true
 		uni.setStorageSync('isLogin', isLogin.value)
+		uni.setStorageSync('USER_INFO', userInfo.value)
 	})
 }
 
@@ -66,12 +73,12 @@ export const showModal = async (
 
 type Icon = 'success' | 'loading' | 'error' | 'none' | undefined
 
-export const showToast = (
+export const showToast = async (
 	title: string,
-	icon: Icon = 'success',
-	duration: number = 2000
+	duration: number = 2000,
+	icon: Icon = 'success'
 ) => {
-	uni.showToast({
+	await uni.showToast({
 		title: title,
 		icon: icon,
 		duration: duration, //持续的时间

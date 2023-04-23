@@ -3,7 +3,7 @@
 		<MineCard
 			mb-56rpx
 			:name="userInfo?.nickName"
-			:class-name="'未知班级'"
+			:class-name="userInfo.class"
 			:avater-url="userInfo?.avatarURL"
 		/>
 		<Setting

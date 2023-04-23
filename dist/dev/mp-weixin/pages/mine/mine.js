@@ -31,7 +31,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         a: common_vendor.p({
           ["mb-56rpx"]: true,
           name: (_a = common_vendor.unref(userInfo)) == null ? void 0 : _a.nickName,
-          ["class-name"]: "\u672A\u77E5\u73ED\u7EA7",
+          ["class-name"]: common_vendor.unref(userInfo).class,
           ["avater-url"]: (_b = common_vendor.unref(userInfo)) == null ? void 0 : _b.avatarURL
         }),
         b: common_vendor.f(settingList, (item, k0, i0) => {

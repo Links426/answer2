@@ -47,7 +47,6 @@ const userLogin = async () => {
 	const code = (await getUserCode()) as string
 	if (code) {
 		await getUserToken(code)
-		uni.setStorageSync('USER_INFO', userInfo.value)
 	}
 	isLogin.value = true
 }

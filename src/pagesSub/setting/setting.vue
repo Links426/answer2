@@ -12,7 +12,7 @@
 		</Option>
 
 		<Option :title="'用户名'" :value-type="'input'" v-model="userInfo!.nickName" />
-		<Option :title="'姓名'" :value-type="'input'" v-model="userInfo.name" />
+		<Option :title="'姓名'" :value-type="'input'" v-model="userInfo.userName" />
 		<Option :title="'学号'" :value-type="'input'" v-model="userInfo.userID" />
 		<!-- <Option :title="'班级'" :value-type="'input'" /> -->
 
@@ -23,9 +23,10 @@
 <script setup lang="ts">
 import Option from '@/pagesSub/setting/components/setting-option.vue'
 import NButton from '@/components/n-button.vue'
-import { getBandingUserInfo } from '@/api/users/login'
+import { getBandingUserInfo, showToast } from '@/api/users/login'
 import { userStore } from '@/stores/userStore'
 import { deepCopy } from '@/hooks/deepClone'
+import { back1 } from '@/hooks/toUrl'
 const useUserStore = userStore()
 const { userInfo } = storeToRefs(useUserStore)
 
@@ -34,8 +35,12 @@ withDefaults(defineProps<{ title: string; showArrow?: boolean }>(), {
 	showArrow: true,
 })
 
-const bandingInfo = () => {
-	getBandingUserInfo(deepCopy(userInfo.value))
+const bandingInfo = async () => {
+	await getBandingUserInfo(deepCopy(userInfo.value))
+	await showToast('绑定成功')
+	setTimeout(() => {
+		back1()
+	}, 500)
 }
 </script>
 
