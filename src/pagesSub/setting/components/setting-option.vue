@@ -5,7 +5,7 @@
 			<slot name="content"></slot>
 			<input
 				type="text"
-				placeholder="请点击填写"
+				:placeholder="placeholder"
 				text-right
 				v-if="valueType === 'input'"
 				v-model="inputModelValue"
@@ -20,8 +20,6 @@
 import { to } from '@/hooks/toUrl'
 type valueType = 'input' | 'select' | 'value' | 'slot'
 
-const inputModelValue = ref()
-
 const props = withDefaults(
 	defineProps<{
 		title: string
@@ -29,14 +27,17 @@ const props = withDefaults(
 		value?: string | number
 		url?: string
 		valueType?: valueType
+		placeholder?: string
 		modelValue?: string | number
 	}>(),
 	{
 		title: '未填写',
 		showArrow: false,
 		valueType: 'value',
+		placeholder: '请点击填写',
 	}
 )
+const inputModelValue = ref(props.modelValue)
 
 const emits = defineEmits(['update:modelValue'])
 

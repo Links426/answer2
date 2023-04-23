@@ -1,5 +1,5 @@
 import { post } from '@/api/request'
-import { userStore } from '@/stores/userStore'
+import { IUserInfo, userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
 const { userInfo, isLogin } = storeToRefs(useUserStore)
@@ -20,11 +20,14 @@ export interface ITokenRes {
 	code: number
 	data: string
 	msg: string
+	openID: string
+	userInfo: Object
 }
 
 export const getUserToken = async (code: string) => {
 	return await post<ITokenRes>('/login', { code }).then((res) => {
 		uni.setStorageSync('TOKEN_KEY', res.data.data)
+		userInfo.value.openID = res.data.openID
 		showToast('登陆成功')
 		isLogin.value = true
 		uni.setStorageSync('isLogin', isLogin.value)
@@ -35,10 +38,14 @@ export const getUserInfo = async () => {
 	return uni.getUserProfile({
 		desc: '获取你的昵称、头像、地区及性别',
 		success: (res) => {
-			userInfo.value = res.userInfo
-			console.log(userInfo.value)
+			userInfo.value.avatarURL = res.userInfo.avatarUrl
+			userInfo.value.nickName = res.userInfo.nickName
 		},
 	})
+}
+
+export const getBandingUserInfo = async (info: IUserInfo) => {
+	return await post('/api/BindUserInfos', info)
 }
 
 export const showModal = async (

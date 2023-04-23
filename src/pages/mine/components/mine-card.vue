@@ -49,10 +49,11 @@ const userLogin = async () => {
 		await getUserToken(code)
 		uni.setStorageSync('USER_INFO', userInfo.value)
 	}
+	isLogin.value = true
 }
 
 const changeUserStatus = () => {
-	if (isLogin) {
+	if (isLogin.value) {
 		to('/pagesSub/setting/setting')
 	} else {
 		userLogin()

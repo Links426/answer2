@@ -5,28 +5,38 @@
 				><div
 					class="avatar"
 					:style="{
-						backgroundImage: 'url(' + userInfo!.avatarUrl + ')',
+						backgroundImage: 'url(' + userInfo!.avatarURL + ')',
 					}"
 				></div
 			></template>
 		</Option>
-		{{ test }}
-		<Option :title="'用户名'" :show-arrow="false" :value-type="'input'" v-model="test" />
-		<Option :title="'姓名'" :value-type="'input'" />
-		<Option :title="'学号'" :value-type="'input'" />
-		<Option :title="'班级'" :value-type="'input'" />
-	</view>
+
+		<Option :title="'用户名'" :value-type="'input'" v-model="userInfo!.nickName" />
+		<Option :title="'姓名'" :value-type="'input'" v-model="userInfo.name" />
+		<Option :title="'学号'" :value-type="'input'" v-model="userInfo.userID" />
+		<!-- <Option :title="'班级'" :value-type="'input'" /> -->
+
+		<view flex justify-center
+			><NButton :content="'保存'" mt-32rpx @my-click="bandingInfo" /></view
+	></view>
 </template>
 <script setup lang="ts">
 import Option from '@/pagesSub/setting/components/setting-option.vue'
+import NButton from '@/components/n-button.vue'
+import { getBandingUserInfo } from '@/api/users/login'
 import { userStore } from '@/stores/userStore'
+import { deepCopy } from '@/hooks/deepClone'
 const useUserStore = userStore()
 const { userInfo } = storeToRefs(useUserStore)
-const test = ref()
+
 withDefaults(defineProps<{ title: string; showArrow?: boolean }>(), {
 	title: '未填写',
 	showArrow: true,
 })
+
+const bandingInfo = () => {
+	getBandingUserInfo(deepCopy(userInfo.value))
+}
 </script>
 
 <style scoped>

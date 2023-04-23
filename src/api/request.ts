@@ -38,14 +38,15 @@ export const RequestMethod: Request = (
 		dataType = 'json',
 	} = {}
 ) => {
-	const token = uni.getStorageSync(TOKEN_KEY)
+	const token = uni.getStorageSync('TOKEN_KEY')
 
 	if (token) {
-		header.Authorization = token
+		header.token = token
 	}
 	console.log('request', {
 		methodType,
 		data,
+		header,
 		url: `${baseUrl}:${port}${prefix}${url}`,
 	})
 	return new Promise((resolve, reject) => {

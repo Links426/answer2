@@ -4,7 +4,7 @@
 			mb-56rpx
 			:name="userInfo?.nickName"
 			:class-name="'未知班级'"
-			:avater-url="userInfo?.avatarUrl"
+			:avater-url="userInfo?.avatarURL"
 		/>
 		<Setting
 			v-for="item in settingList"
