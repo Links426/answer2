@@ -6,16 +6,31 @@
 			:class-name="'未知班级'"
 			:avater-url="userInfo?.avatarUrl"
 		/>
-		<MineSetting :icon-name="'icon-shezhi'" :content="'设置'" mb-24rpx />
+		<Setting
+			v-for="item in settingList"
+			:key="item.id"
+			:icon-name="item.icon"
+			:content="item.content"
+			mb-16rpx
+			@my-click="to(item.url)"
+		/>
 	</view>
 </template>
 <script setup lang="ts">
 import MineCard from '@/pages/mine/components/mine-card.vue'
-import MineSetting from '@/pages/mine/components/mine-setting.vue'
+import Setting from '@/pages/mine/components/mine-setting.vue'
+import { to } from '@/hooks/toUrl'
 import { userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
 const { userInfo, isLogin } = storeToRefs(useUserStore)
+
+const settingList = [
+	{ id: 0, content: '设置', icon: 'icon-shezhi', url: '/pagesSub/setting/setting' },
+	{ id: 1, content: '设置', icon: 'icon-shezhi', url: '/pagesSub/setting/setting' },
+	{ id: 2, content: '设置', icon: 'icon-shezhi', url: '/pagesSub/setting/setting' },
+	{ id: 3, content: '设置', icon: 'icon-shezhi', url: '/pagesSub/setting/setting' },
+]
 
 onLoad(() => {
 	const info = uni.getStorageSync('USER_INFO')

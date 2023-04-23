@@ -1,5 +1,5 @@
 <template>
-	<view class="mine-setting" @click="emits('my-click')">
+	<view class="mine-setting" @click="transferClick">
 		<i class="iconfont" :class="iconName"> </i>
 		{{ content }}
 	</view>
@@ -9,8 +9,10 @@ defineProps<{
 	iconName: string
 	content: string
 }>()
-
 const emits = defineEmits(['my-click'])
+const transferClick = () => {
+	emits('my-click')
+}
 </script>
 
 <style scoped>

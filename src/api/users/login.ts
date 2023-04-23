@@ -24,7 +24,7 @@ export interface ITokenRes {
 
 export const getUserToken = async (code: string) => {
 	return await post<ITokenRes>('/login', { code }).then((res) => {
-		uni.setStorageSync('TOKEN_KEY', res.data)
+		uni.setStorageSync('TOKEN_KEY', res.data.data)
 		showToast('登陆成功')
 		isLogin.value = true
 		uni.setStorageSync('isLogin', isLogin.value)

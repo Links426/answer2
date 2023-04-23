@@ -5,7 +5,10 @@
 				><view>{{ name }}</view>
 				<view class="ml-20rpx text-#C2C7F3">{{ className }}</view></view
 			>
-			<MineButton :content="'登陆'" @my-click="userLogin" v-if="!isLogin"></MineButton>
+			<MineButton
+				:content="!isLogin ? '登陆' : '编辑个人资料'"
+				@my-click="changeUserStatus"
+			></MineButton>
 		</view>
 		<view h-full>
 			<view
@@ -18,6 +21,7 @@
 <script setup lang="ts">
 import { getUserInfo } from '@/api/users/login'
 import { getUserCode, getUserToken } from '@/api/users/login'
+import { to } from '@/hooks/toUrl'
 
 import MineButton from '@/pages/mine/components/mine-button.vue'
 import { userStore } from '@/stores/userStore'
@@ -44,6 +48,14 @@ const userLogin = async () => {
 	if (code) {
 		await getUserToken(code)
 		uni.setStorageSync('USER_INFO', userInfo.value)
+	}
+}
+
+const changeUserStatus = () => {
+	if (isLogin) {
+		to('/pagesSub/setting/setting')
+	} else {
+		userLogin()
 	}
 }
 </script>
