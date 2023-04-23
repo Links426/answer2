@@ -10,7 +10,8 @@
       "pages": [
         "course/course",
         "classroom/classroom",
-        "question/question"
+        "question/question",
+        "setting/setting"
       ]
     }
   ],

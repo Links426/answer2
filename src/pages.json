@@ -40,6 +40,12 @@
 						"navigationBarBackgroundColor": "#6AA1FF",
 						"navigationBarTextStyle": "white"
 					}
+				},
+				{
+					"path": "setting/setting",
+					"style": {
+						"navigationBarTitleText": "设置"
+					}
 				}
 			]
 		}
