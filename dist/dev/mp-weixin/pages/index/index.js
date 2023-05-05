@@ -2,6 +2,7 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_courseStore = require("../../stores/courseStore.js");
 const utils_index_index = require("../../utils/index/index.js");
+const hooks_toUrl = require("../../hooks/toUrl.js");
 if (!Math) {
   (NavSelect + CourseCard)();
 }
@@ -13,9 +14,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const useCourseStore = stores_courseStore.courseStore();
     const { courseCardList } = common_vendor.storeToRefs(useCourseStore);
     const toCoursePage = (title, id, teachClass) => {
-      common_vendor.index.navigateTo({
-        url: `/pagesSub/course/course?id=${id}&title=${title}&teacherClass=${teachClass}`
-      });
+      hooks_toUrl.to(`/pagesSub/course/course?id=${id}&title=${title}&teacherClass=${teachClass}`);
     };
     return (_ctx, _cache) => {
       return {

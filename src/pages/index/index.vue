@@ -22,13 +22,12 @@ import NavSelect from '@/components/nav-select.vue'
 import CourseCard from './components/index-courseCard.vue'
 import { courseStore } from '@/stores/courseStore'
 import { indexSelectList } from '@/utils/index/index'
+import { to } from '@/hooks/toUrl'
 const useCourseStore = courseStore()
 const { courseCardList } = storeToRefs(useCourseStore)
 
 const toCoursePage = (title: string, id: number, teachClass: string) => {
-	uni.navigateTo({
-		url: `/pagesSub/course/course?id=${id}&title=${title}&teacherClass=${teachClass}`,
-	})
+	to(`/pagesSub/course/course?id=${id}&title=${title}&teacherClass=${teachClass}`)
 }
 </script>
 

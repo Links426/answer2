@@ -11,7 +11,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "mine",
   setup(__props) {
     const useUserStore = stores_userStore.userStore();
-    const { userInfo, isLogin } = common_vendor.storeToRefs(useUserStore);
+    const { userInfo, isBinding } = common_vendor.storeToRefs(useUserStore);
     const settingList = [
       { id: 0, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
       { id: 1, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
@@ -20,9 +20,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     ];
     common_vendor.onLoad(() => {
       const info = common_vendor.index.getStorageSync("USER_INFO");
-      if (info && isLogin) {
+      if (info && isBinding) {
         userInfo.value = info;
-        isLogin.value = true;
+        isBinding.value = true;
       }
     });
     return (_ctx, _cache) => {

@@ -3,7 +3,7 @@ import { isNull } from '@/hooks/isNull'
 import { IUserInfo, userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
-const { userInfo, isLogin } = storeToRefs(useUserStore)
+const { userInfo, isBinding } = storeToRefs(useUserStore)
 export const getUserCode = () => {
 	return new Promise((resolve) => {
 		uni.login({
@@ -26,18 +26,33 @@ export interface ITokenRes {
 }
 
 export const getUserToken = async (code: string) => {
-	return await post<ITokenRes>('/login', { code }).then((res) => {
+	return await post<ITokenRes>('/login', { code }).then(async (res) => {
 		uni.setStorageSync('TOKEN_KEY', res.data.data)
+		userInfo.value.openID = res.data.openID
 		if (isNull(res.data.userInfo)) {
+			isBinding.value = false
+			await showModal('请完善信息', '完善信息以登陆').then(async (res: any) => {
+				if (res.confirm) {
+					uni.navigateTo({ url: '/pagesSub/mineSub/mineSub-setInfo' })
+				}
+			})
+			isBinding.value = true
+		} else {
+			isBinding.value = true
+			userInfo.value = res.data.userInfo![0]
+		}
+
+		uni.setStorageSync('USER_INFO', userInfo.value)
+		/* 	if (isNull(res.data.userInfo)) {
 			userInfo.value.openID = res.data.openID
 		} else {
 			userInfo.value = res.data.userInfo![0]
 		}
-
-		showToast('登陆成功')
-		isLogin.value = true
-		uni.setStorageSync('isLogin', isLogin.value)
-		uni.setStorageSync('USER_INFO', userInfo.value)
+ */
+		// showToast('登陆成功')
+		// isLogin.value = true
+		// uni.setStorageSync('isLogin', isLogin.value)
+		/* uni.setStorageSync('USER_INFO', userInfo.value) */
 	})
 }
 
@@ -54,6 +69,8 @@ export const getUserInfo = async () => {
 export const getBandingUserInfo = async (info: IUserInfo) => {
 	return await post('/api/BindUserInfos', info)
 }
+
+export const postUploadAvatar = async (url: string) => {}
 
 export const showModal = async (
 	title: string = '默认标题',
@@ -78,7 +95,7 @@ export const showToast = async (
 	duration: number = 2000,
 	icon: Icon = 'success'
 ) => {
-	await uni.showToast({
+	uni.showToast({
 		title: title,
 		icon: icon,
 		duration: duration, //持续的时间

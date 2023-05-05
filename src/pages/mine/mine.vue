@@ -23,7 +23,7 @@ import { to } from '@/hooks/toUrl'
 import { userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
-const { userInfo, isLogin } = storeToRefs(useUserStore)
+const { userInfo, isBinding } = storeToRefs(useUserStore)
 
 const settingList = [
 	{ id: 0, content: '设置', icon: 'icon-shezhi', url: '/pagesSub/setting/setting' },
@@ -34,9 +34,9 @@ const settingList = [
 
 onLoad(() => {
 	const info = uni.getStorageSync('USER_INFO')
-	if (info && isLogin) {
+	if (info && isBinding) {
 		userInfo.value = info
-		isLogin.value = true
+		isBinding.value = true
 	}
 })
 </script>

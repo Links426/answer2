@@ -11,7 +11,8 @@
         "course/course",
         "classroom/classroom",
         "question/question",
-        "setting/setting"
+        "setting/setting",
+        "mineSub/mineSub-setInfo"
       ]
     }
   ],

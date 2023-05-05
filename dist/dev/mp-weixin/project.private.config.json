@@ -3,5 +3,6 @@
   "projectname": "机电小智",
   "setting": {
     "compileHotReLoad": true
-  }
+  },
+  "libVersion": "2.31.0"
 }

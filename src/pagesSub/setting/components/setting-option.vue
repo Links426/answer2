@@ -10,6 +10,7 @@
 				v-if="valueType === 'input'"
 				v-model="inputModelValue"
 				@input="transferInputValue"
+				:disabled="disable"
 			/>
 			<view class="text-#7F7F7F" v-if="valueType === 'value'">{{ value }}</view>
 			<i class="iconfont icon-qianwang ml-10rpx" v-if="showArrow"></i>
@@ -29,12 +30,14 @@ const props = withDefaults(
 		valueType?: valueType
 		placeholder?: string
 		modelValue?: string | number
+		disable?: boolean
 	}>(),
 	{
 		title: '未填写',
 		showArrow: false,
 		valueType: 'value',
-		placeholder: '请点击填写',
+		placeholder: '未填写',
+		disable: false,
 	}
 )
 const inputModelValue = ref(props.modelValue)

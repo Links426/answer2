@@ -2,61 +2,45 @@
 	<view class="mine-idCard">
 		<view flex flex-col justify-between font-bold h-full>
 			<view flex
-				><view>{{ name }}</view>
-				<view class="ml-20rpx text-#C2C7F3">{{ className }}</view></view
+				><view>{{ userInfo.nickName }}</view>
+				<view>{{}}</view>
+				<view class="ml-20rpx text-#C2C7F3">{{ userInfo.academy }}</view></view
+			>
+			<view flex
+				><view>{{ userInfo.userName }}</view>
+				<view class="ml-20rpx text-#C2C7F3">{{ userInfo.role }}</view></view
 			>
 			<MineButton
-				:content="!isLogin ? '登陆' : '编辑个人资料'"
+				v-if="!isBinding"
+				:content="'登陆'"
+				:key="Number(isBinding)"
 				@my-click="changeUserStatus"
 			></MineButton>
 		</view>
 		<view h-full>
 			<view
 				class="mine-avater"
-				:style="{ backgroundImage: 'url(' + avaterUrl + ')' }"
+				:style="{ backgroundImage: 'url(' + userInfo.avatarURL + ')' }"
 			></view>
 		</view>
 	</view>
 </template>
 <script setup lang="ts">
-import { getUserInfo } from '@/api/users/login'
+import { showToast } from '@/api/users/login'
 import { getUserCode, getUserToken } from '@/api/users/login'
-import { to } from '@/hooks/toUrl'
 
 import MineButton from '@/pages/mine/components/mine-button.vue'
 import { userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
-const { isLogin, userInfo } = storeToRefs(useUserStore)
+const { isBinding, userInfo } = storeToRefs(useUserStore)
 
-withDefaults(
-	defineProps<{
-		name: string
-		className: string
-		avaterUrl: string
-	}>(),
-	{
-		name: '未知用户',
-		className: '未知班级',
-		avaterUrl: 'https://p.ipic.vip/v0144p.jpeg',
-	}
-)
-
-const userLogin = async () => {
-	await getUserInfo()
+const changeUserStatus = async () => {
 	const code = (await getUserCode()) as string
 	if (code) {
 		await getUserToken(code)
 	}
-	isLogin.value = true
-}
-
-const changeUserStatus = () => {
-	if (isLogin.value) {
-		to('/pagesSub/setting/setting')
-	} else {
-		userLogin()
-	}
+	showToast('获取信息成功')
 }
 </script>
 
