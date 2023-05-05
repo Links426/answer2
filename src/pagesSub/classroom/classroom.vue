@@ -26,7 +26,7 @@
 import NavSelect from '@/components/nav-select.vue'
 import ClassroomQuestion from '@/pagesSub/classroom/components/classroom-question.vue'
 import { ClassroomPage, selectClassroomOptions } from '@/utils/classroom/classroom'
-
+import { to } from '@/hooks/toUrl'
 const selectClassroomId = ref(ClassroomPage.ALL)
 
 const toClassroomPage = (id: number) => {
@@ -41,9 +41,7 @@ onLoad((options: any) => {
 	})
 })
 const toQuestion = (id: number) => {
-	uni.navigateTo({
-		url: `../../pagesSub/question/question?id=${id}`,
-	})
+	to(`../../pagesSub/question/question?id=${id}`)
 }
 </script>
 

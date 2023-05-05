@@ -19,6 +19,7 @@
 	></view>
 </template>
 <script setup lang="ts">
+import { to } from '@/hooks/toUrl'
 const props = withDefaults(
 	defineProps<{
 		id: string | number
@@ -49,9 +50,7 @@ const time = computed(() => {
 })
 
 const toClassRoom = (id: string | number) => {
-	uni.navigateTo({
-		url: `/pagesSub/classroom/classroom?id=${id}&name=${props.name}`,
-	})
+	to(`/pagesSub/classroom/classroom?id=${id}&name=${props.name}`)
 }
 </script>
 

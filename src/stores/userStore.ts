@@ -13,22 +13,19 @@ export interface IUserInfo {
 	userName: string
 }
 
-// 使用setup模式定义
 export const userStore = defineStore('user', () => {
-	const isLogin = ref(false)
-	const isBinding = ref(false)
+	const isBinding= ref(false)
 	const userInfo = ref<IUserInfo>({
 		academy: '',
-
 		avatarURL: '',
 		class: '',
 		major: '',
-		nickName: '未知用户',
+		nickName: '',
 		openID: '',
 		phone: '',
 		role: '',
 		userID: '',
 		userName: '',
 	})
-	return { isLogin, userInfo }
+	return { isBinding, userInfo }
 })

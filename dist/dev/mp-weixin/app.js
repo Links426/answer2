@@ -9,6 +9,7 @@ if (!Math) {
   "./pagesSub/classroom/classroom.js";
   "./pagesSub/question/question.js";
   "./pagesSub/setting/setting.js";
+  "./pagesSub/mineSub/mineSub-setInfo.js";
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "App",

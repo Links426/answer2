@@ -1,47 +1,34 @@
 <template>
 	<view
-		><Option :title="'头像'" :show-arrow="true">
+		><Option :title="'头像'">
 			<template #content
-				><div
-					class="avatar"
-					:style="{
-						backgroundImage: 'url(' + userInfo!.avatarURL + ')',
-					}"
-				></div
+				><button
+					class="avatarButton"
+					:style="{ backgroundImage: 'url(' + avatarUrl + ')' }"
+				></button
 			></template>
 		</Option>
 
 		<Option :title="'用户名'" :value-type="'input'" v-model="userInfo!.nickName" />
 		<Option :title="'姓名'" :value-type="'input'" v-model="userInfo.userName" />
 		<Option :title="'学号'" :value-type="'input'" v-model="userInfo.userID" />
-		<!-- <Option :title="'班级'" :value-type="'input'" /> -->
-
-		<view flex justify-center
-			><NButton :content="'保存'" mt-32rpx @my-click="bandingInfo" /></view
-	></view>
+		<Option :title="'学院'" :value-type="'input'" v-model="userInfo.academy" />
+		<Option :title="'班级'" :value-type="'input'" v-model="userInfo.class" />
+	</view>
 </template>
 <script setup lang="ts">
 import Option from '@/pagesSub/setting/components/setting-option.vue'
-import NButton from '@/components/n-button.vue'
-import { getBandingUserInfo, showToast } from '@/api/users/login'
+
 import { userStore } from '@/stores/userStore'
-import { deepCopy } from '@/hooks/deepClone'
-import { back1 } from '@/hooks/toUrl'
+
 const useUserStore = userStore()
 const { userInfo } = storeToRefs(useUserStore)
+const avatarUrl = ref(userInfo.value.avatarURL)
 
 withDefaults(defineProps<{ title: string; showArrow?: boolean }>(), {
 	title: '未填写',
 	showArrow: true,
 })
-
-const bandingInfo = async () => {
-	await getBandingUserInfo(deepCopy(userInfo.value))
-	await showToast('绑定成功')
-	setTimeout(() => {
-		back1()
-	}, 500)
-}
 </script>
 
 <style scoped>
@@ -62,10 +49,21 @@ const bandingInfo = async () => {
 	font-weight: 700;
 	color: #c6c6c6;
 }
-.avatar {
+
+.avatarButton {
 	width: 124rpx;
 	height: 124rpx;
 	border-radius: 50%;
-	background-size: contain;
+	display: flex;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	background-color: #c9cdd4;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.icon-paizhao {
+	font-size: 68rpx;
 }
 </style>
