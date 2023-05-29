@@ -7050,4 +7050,5 @@ exports.reactive = reactive;
 exports.ref = ref;
 exports.storeToRefs = storeToRefs;
 exports.t = t;
+exports.toRaw = toRaw;
 exports.unref = unref;

@@ -43,6 +43,10 @@ export const RequestMethod: Request = (
 	if (token) {
 		header.token = token
 	}
+	uni.showLoading({
+		title: '加载中',
+	})
+
 	console.log('request', {
 		methodType,
 		data,
@@ -64,7 +68,7 @@ export const RequestMethod: Request = (
 					url,
 				})
 				const resultCode = Number.parseInt(resultData.code)
-
+				uni.hideLoading()
 				resolve({
 					code: resultCode,
 					data: res.data as any,

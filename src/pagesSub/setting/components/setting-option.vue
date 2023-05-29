@@ -37,7 +37,7 @@ const props = withDefaults(
 		showArrow: false,
 		valueType: 'value',
 		placeholder: '未填写',
-		disable: false,
+		disable: true,
 	}
 )
 const inputModelValue = ref(props.modelValue)

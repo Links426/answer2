@@ -6,6 +6,7 @@ if (!Math) {
   "./pages/message/message.js";
   "./pages/mine/mine.js";
   "./pagesSub/course/course.js";
+  "./pagesSub/course/addCourse.js";
   "./pagesSub/classroom/classroom.js";
   "./pagesSub/question/question.js";
   "./pagesSub/setting/setting.js";

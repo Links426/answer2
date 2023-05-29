@@ -4,14 +4,18 @@
 		<NavSelect :select-options="indexSelectList" :defaultOption="1" />
 		<scroll-view scroll-y="true" class="scroll-content">
 			<view w-full pt-32rpx flex flex-col items-center>
-				<div v-for="card in courseCardList" :key="card.id">
-					<CourseCard
-						@to-detail="toCoursePage(card.title, card.id, card.teachClass)"
-						:title="card.title"
-						:teachClass="card.teachClass"
-						:teacher-name="card.teacherName"
-						:teacher-avater="card.teacherAvater"
-					/>
+				<div>
+					<!-- 		<div v-for="card in courseCardList" :key="card.id">
+						<CourseCard
+							@to-detail="toCoursePage(card.title, card.id, card.teachClass)"
+							:title="card.title"
+							:teachClass="card.teachClass"
+							:teacher-name="card.teacherName"
+							:teacher-avater="card.teacherAvater"
+						/>
+					</div> -->
+
+					<NButton :content="'没有课程？立即添加'" @my-click="addClass"></NButton>
 				</div>
 			</view>
 		</scroll-view>
@@ -19,16 +23,30 @@
 </template>
 <script setup lang="ts">
 import NavSelect from '@/components/nav-select.vue'
+import NButton from '@/components/n-button.vue'
 import CourseCard from './components/index-courseCard.vue'
 import { courseStore } from '@/stores/courseStore'
+import { userStore } from '@/stores/userStore'
 import { indexSelectList } from '@/utils/index/index'
 import { to } from '@/hooks/toUrl'
+import { post } from '@/api/request'
 const useCourseStore = courseStore()
 const { courseCardList } = storeToRefs(useCourseStore)
 
-const toCoursePage = (title: string, id: number, teachClass: string) => {
-	to(`/pagesSub/course/course?id=${id}&title=${title}&teacherClass=${teachClass}`)
+const useUserStore = userStore()
+const { userInfo } = storeToRefs(useUserStore)
+
+const addClass = async () => {
+	// return await post('/api/course', courseDetail.value)
+	return to('/pagesSub/course/addCourse')
 }
+
+onLoad(() => {
+	const info = uni.getStorageSync('USER_INFO')
+	if (info) {
+		userInfo.value = info
+	}
+})
 </script>
 
 <style scoped>

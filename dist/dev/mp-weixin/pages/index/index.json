@@ -2,6 +2,6 @@
   "navigationBarTitleText": "机电小智",
   "usingComponents": {
     "nav-select": "../../components/nav-select",
-    "course-card": "./components/index-courseCard"
+    "n-button": "../../components/n-button"
   }
 }

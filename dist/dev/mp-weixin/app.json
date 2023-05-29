@@ -9,6 +9,7 @@
       "root": "pagesSub",
       "pages": [
         "course/course",
+        "course/addCourse",
         "classroom/classroom",
         "question/question",
         "setting/setting",
