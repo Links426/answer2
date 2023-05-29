@@ -25,6 +25,7 @@
 			"root": "pagesSub",
 			"pages": [
 				{ "path": "course/course", "style": { "navigationBarTitleText": "课程" } },
+				{ "path": "course/addCourse", "style": { "navigationBarTitleText": "添加课程" } },
 				{
 					"path": "classroom/classroom",
 					"style": {

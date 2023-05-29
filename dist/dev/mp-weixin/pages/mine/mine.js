@@ -1,7 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const hooks_toUrl = require("../../hooks/toUrl.js");
-const stores_userStore = require("../../stores/userStore.js");
 if (!Math) {
   (MineCard + Setting)();
 }
@@ -10,29 +9,16 @@ const Setting = () => "./components/mine-setting.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "mine",
   setup(__props) {
-    const useUserStore = stores_userStore.userStore();
-    const { userInfo, isBinding } = common_vendor.storeToRefs(useUserStore);
     const settingList = [
       { id: 0, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
       { id: 1, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
       { id: 2, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
       { id: 3, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" }
     ];
-    common_vendor.onLoad(() => {
-      const info = common_vendor.index.getStorageSync("USER_INFO");
-      if (info && isBinding) {
-        userInfo.value = info;
-        isBinding.value = true;
-      }
-    });
     return (_ctx, _cache) => {
-      var _a, _b;
       return {
         a: common_vendor.p({
-          ["mb-56rpx"]: true,
-          name: (_a = common_vendor.unref(userInfo)) == null ? void 0 : _a.nickName,
-          ["class-name"]: common_vendor.unref(userInfo).class,
-          ["avater-url"]: (_b = common_vendor.unref(userInfo)) == null ? void 0 : _b.avatarURL
+          ["mb-56rpx"]: true
         }),
         b: common_vendor.f(settingList, (item, k0, i0) => {
           return {

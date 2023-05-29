@@ -2,7 +2,7 @@
 	<view class="bg-#F7F8FA flex flex-col items-center pt-88rpx h-100vh">
 		<button
 			class="avatarButton mb-60rpx"
-			:style="{ backgroundImage: 'url(' + userInfo.avatarURL + ')' }"
+			:style="{ backgroundImage: 'url(' + bindInfo.avatarURL + ')' }"
 			open-type="chooseAvatar"
 			@chooseavatar="onChooseAvatar"
 		>
@@ -13,37 +13,39 @@
 			type="nickname"
 			class="nickNameInput mb-30rpx"
 			placeholder="请输入昵称"
-			v-model="userInfo.nickName"
+			v-model="bindInfo.nickName"
 		/>
 		<input
 			class="nickNameInput mb-80rpx"
 			placeholder="请输入姓名"
-			v-model="userInfo.userName"
+			v-model="bindInfo.name"
 		/>
 		<input
 			class="nickNameInput mb-80rpx"
 			placeholder="请输入学号"
-			v-model="userInfo.userID"
+			v-model="bindInfo.userID"
 		/>
 
 		<NButton :content="'保存'" @my-click="bandingInfo"></NButton>
 	</view>
 </template>
 <script setup lang="ts">
-import {
-	getBandingUserInfo,
-	getUserCode,
-	getUserToken,
-	showToast,
-} from '@/api/users/login'
+import { getBandingUserInfo, showModal, showToast } from '@/api/users/login'
 import NButton from '@/components/n-button.vue'
 import { deepCopy } from '@/hooks/deepClone'
 import { back1 } from '@/hooks/toUrl'
-
 import { userStore } from '@/stores/userStore'
 
 const useUserStore = userStore()
-const { userInfo } = storeToRefs(useUserStore)
+const { isBinding, userInfo } = storeToRefs(useUserStore)
+
+const bindInfo = ref({
+	openID: userInfo.value.openID,
+	avatarURL: '',
+	name: '',
+	userID: '',
+	nickName: '',
+})
 
 const onChooseAvatar = (e: { detail: any }) => {
 	uni.uploadFile({
@@ -52,23 +54,26 @@ const onChooseAvatar = (e: { detail: any }) => {
 		name: 'image',
 		header: { 'Content-Type': 'multipart/form-data' },
 		success: (res: any) => {
-			userInfo.value.avatarURL = JSON.parse(res.data).data.image_url
+			bindInfo.value.avatarURL = JSON.parse(res.data).data.image_url
 		},
 	})
 }
 const bandingInfo = async () => {
-	await getBandingUserInfo(deepCopy(userInfo.value))
-	await showToast('绑定成功')
-	setTimeout(() => {
-		back1()
-	}, 500)
+	await getBandingUserInfo(deepCopy(bindInfo.value)).then((res) => {
+		if (res.code === 200) {
+			console.log(res.data.data[0])
+			userInfo.value = res.data.data[0]
+			uni.setStorageSync('USER_INFO', userInfo.value)
+			showToast('绑定成功')
+			setTimeout(() => {
+				back1()
+			}, 500)
+		} else {
+			showModal('绑定失败', '请检查信息是否正确')
+		}
+	})
 }
-const userLogin = async () => {
-	const code = (await getUserCode()) as string
-	if (code) {
-		await getUserToken(code)
-	}
-}
+const userLogin = async () => {}
 onLoad(async () => {
 	userLogin()
 })
