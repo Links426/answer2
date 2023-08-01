@@ -11,6 +11,7 @@
         "course/course",
         "course/addCourse",
         "classroom/classroom",
+        "classroom/classroom-publish",
         "question/question",
         "setting/setting",
         "mineSub/mineSub-setInfo"
