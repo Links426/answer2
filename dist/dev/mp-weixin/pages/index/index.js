@@ -17,6 +17,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   setup(__props) {
     const useUserStore = stores_userStore.userStore();
     const { userInfo, courseList } = common_vendor.storeToRefs(useUserStore);
+    const { getAllCourseMsg } = useUserStore;
     const addClass = async () => {
       hooks_toUrl.to("/pagesSub/course/addCourse");
     };
@@ -34,26 +35,19 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       }
     };
     const testWs = () => {
-      api_websocket.connectWs(12100000001, 1059437675).onMessage((res) => {
+      api_websocket.connectWs(111, 3904164167).onMessage((res) => {
         console.log(res.data);
       });
     };
     const deleteWs = () => {
-      api_request.Delete("/ws/delete/conn?roomID=1059437675&ID=12100000001");
+      api_request.Delete("/ws/delete/conn?roomID=482589151&ID=111");
     };
-    common_vendor.onLoad(() => {
+    common_vendor.onLoad(async () => {
       const info = common_vendor.index.getStorageSync("USER_INFO");
       if (info) {
         userInfo.value = info;
       }
-      api_request.get("/user/get/course", {
-        ID: userInfo.value.userID,
-        name: userInfo.value.userName,
-        role: userInfo.value.role === "\u5B66\u751F" ? "student" : " teacher"
-      }).then(({ data }) => {
-        var _a;
-        courseList.value = (_a = data == null ? void 0 : data.data) == null ? void 0 : _a.course;
-      });
+      await getAllCourseMsg();
     });
     return (_ctx, _cache) => {
       return {
@@ -65,7 +59,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         c: common_vendor.f(common_vendor.unref(courseList), (course, index, i0) => {
           return {
             a: index,
-            b: common_vendor.o(($event) => common_vendor.unref(hooks_toUrl.to)(`/pagesSub/course/course?index=${index}&title=${course.courseName}`), index),
+            b: common_vendor.o(($event) => common_vendor.unref(hooks_toUrl.to)(`/pagesSub/course/course?index=${index}&title=${course.courseName}&courseID=${course.courseID}`), index),
             c: "83a5a03c-1-" + i0,
             d: common_vendor.p({
               teacherName: course == null ? void 0 : course.teaName,

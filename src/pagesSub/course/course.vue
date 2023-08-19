@@ -14,7 +14,7 @@
           :key="route.roomID"
           :id="route.roomID"
           :time="route.create_at"
-          :name="route.roomTitle"
+          :name="route.detail"
         />
       </view>
       <img
@@ -23,16 +23,19 @@
       />
     </view>
   </view>
+  <button @click="to('/pagesSub/room/addRoom')">添加room</button>
 </template>
 <script setup lang="ts">
-import { get } from "@/api/request";
+import { get, post } from "@/api/request";
 import NavSelect from "@/components/nav-select.vue";
+import { to } from "@/hooks/toUrl";
 import CourseRoute from "@/pagesSub/course/components/course-route.vue";
 import { userStore } from "@/stores/userStore";
 import { coursePage, courseSelectOptions } from "@/utils/course/course";
 
 const useUserStore = userStore();
-const { userInfo, courseList } = storeToRefs(useUserStore);
+const { userInfo, courseList, currentCourseMessage, currentRoomMessage } =
+  storeToRefs(useUserStore);
 const coursePageSelected = ref(coursePage.CourseRoute);
 const props = ref();
 const changePageSelect = (id: number) => {
@@ -40,14 +43,17 @@ const changePageSelect = (id: number) => {
 };
 
 onLoad((options: any) => {
-  // courseDetail.value.id = options.id
-
   props.value = options;
+
+  currentCourseMessage.value = toRaw(courseList.value).find((item) => {
+    return item.courseID === options.courseID;
+  });
 
   uni.setNavigationBarTitle({
     title: props.value.title,
   });
 });
+
 </script>
 
 <style scoped>

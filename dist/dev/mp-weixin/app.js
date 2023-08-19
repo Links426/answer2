@@ -12,6 +12,7 @@ if (!Math) {
   "./pagesSub/question/question.js";
   "./pagesSub/setting/setting.js";
   "./pagesSub/mineSub/mineSub-setInfo.js";
+  "./pagesSub/room/addRoom.js";
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "App",

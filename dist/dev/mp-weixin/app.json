@@ -14,7 +14,8 @@
         "classroom/classroom-publish",
         "question/question",
         "setting/setting",
-        "mineSub/mineSub-setInfo"
+        "mineSub/mineSub-setInfo",
+        "room/addRoom"
       ]
     }
   ],

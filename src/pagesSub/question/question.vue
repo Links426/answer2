@@ -12,7 +12,7 @@
     <view
       flex
       mb-72rpx
-      v-for="(option, index) in questionOptionsList?.Options"
+      v-for="(option, index) in questionOptionsList?.options"
       :key="option.index"
       @click="selectOption(index)"
     >
@@ -34,27 +34,87 @@
   </view>
 </template>
 <script setup lang="ts">
+import { post } from "@/api/request";
 import { userStore } from "@/stores/userStore";
 
 const useUserStore = userStore();
-const { currentQuestionData } = storeToRefs(useUserStore);
+const { currentQuestionData, currentRoomMessage, userInfo } =
+  storeToRefs(useUserStore);
 
 onLoad(() => {
-  questionOptionsList.value = toRaw(currentQuestionData.value);
+  questionOptionsList.value = toRaw(currentQuestionData.value).courseRecord;
 });
 const questionOptionsList = ref<any>({});
 const questionSelectIndex = ref(0);
+// 是否填写
+const hasSubmit = ref(false);
 const selectOption = (index: number) => {
   questionSelectIndex.value = index;
+  console.log(studentAnswer.value);
 };
+
+const studentAnswer = ref({
+  id: toRaw(currentQuestionData?.value.courseRecord?.id),
+  getScore:
+    toRaw(
+      currentQuestionData?.value?.courseRecord?.options[
+        questionSelectIndex?.value
+      ]
+    ) === currentQuestionData.value.courseRecord.answer,
+  hasSubmit: hasSubmit.value,
+  submitTime: 0,
+  answers: [
+    toRaw(
+      currentQuestionData?.value?.courseRecord?.options[
+        questionSelectIndex?.value
+      ]
+    ),
+  ],
+});
+
 const submitAnswer = () => {
-  uni.showToast({
-    title: "提交成功",
-    icon: "success",
+  console.log(toRaw(studentAnswer.value));
+  studentAnswer.value.hasSubmit = hasSubmit.value;
+  studentAnswer.value.submitTime = new Date().getTime();
+  post(
+    "/ws/post/msg",
+    {
+      roomID: "1059437675",
+      senderID: [userInfo.value.userID],
+      // receiverID: [currentQuestionData.value.SenderID],
+      receiverID: ["12100000002"],
+
+      msgType: "courseRecord",
+      chatMsg: "",
+      judgeDelete: 0,
+      courseRecord: toRaw(studentAnswer.value),
+    },
+    {
+      header: { "content-type": "application/json" },
+    }
+  ).then((res) => {
+    console.log({
+      roomID: "1059437675",
+      senderID: [userInfo.value.userID],
+      // receiverID: [currentQuestionData.value.SenderID],
+      receiverID: ["12100000002"],
+
+      msgType: "StuPubRecord",
+      chatMsg: "",
+      judgeDelete: 0,
+      courseRecord: toRaw(studentAnswer.value),
+    });
+    hasSubmit.value = true;
+    // console.log(res.resultData);
+    // uni.showToast({
+    //   title: "提交成功",
+    //   icon: "success",
+    // });
+    // setTimeout(() => {
+    //   hasSubmit.value = true;
+    //   uni.navigateBack({ delta: 1 });
+    // }, 1000);
   });
-  setTimeout(() => {
-    uni.navigateBack({ delta: 1 });
-  }, 1000);
 };
 </script>
 

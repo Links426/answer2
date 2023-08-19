@@ -1,3 +1,4 @@
+import { get } from "@/api/request";
 import { defineStore } from "pinia";
 
 export interface IUserInfo {
@@ -27,8 +28,28 @@ export const userStore = defineStore("user", () => {
     userID: "",
     userName: "",
   });
+  // 课程内容
   const courseList = ref<Array<any>>([]);
 
+  const currentRoomMessage = ref();
+  const currentCourseMessage = ref();
+
   const currentQuestionData = ref();
-  return { isBinding, userInfo, courseList, currentQuestionData };
+  const getAllCourseMsg = async () => {
+    const { data } = await get("/user/get/course", {
+      ID: userInfo.value.userID,
+      name: userInfo.value.userName,
+      role: userInfo.value.role === "学生" ? "student" : " teacher",
+    });
+    courseList.value = data?.data?.course;
+  };
+  return {
+    isBinding,
+    userInfo,
+    courseList,
+    currentQuestionData,
+    currentCourseMessage,
+    currentRoomMessage,
+    getAllCourseMsg,
+  };
 });

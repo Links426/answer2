@@ -18,7 +18,7 @@
             :key="index"
             @to-detail="
               to(
-                `/pagesSub/course/course?index=${index}&title=${course.courseName}`
+                `/pagesSub/course/course?index=${index}&title=${course.courseName}&courseID=${course.courseID}`
               )
             "
           />
@@ -26,6 +26,7 @@
             :content="'没有课程？立即添加'"
             @my-click="addClass"
           ></NButton>
+
           <NButton :content="'测试链接'" @my-click="testWs"></NButton>
           <NButton :content="'测试删除链接'" @my-click="deleteWs"></NButton>
         </div>
@@ -41,11 +42,12 @@ import IndexCourseCard from "@/pages/index/components/index-courseCard.vue";
 import { userStore } from "@/stores/userStore";
 import { indexSelectList } from "@/utils/index/index";
 import { to } from "@/hooks/toUrl";
-import { Delete, get, post } from "@/api/request";
+import { Delete, get } from "@/api/request";
 import { connectWs } from "@/api/websocket";
 
 const useUserStore = userStore();
 const { userInfo, courseList } = storeToRefs(useUserStore);
+const { getAllCourseMsg } = useUserStore;
 const addClass = async () => {
   to("/pagesSub/course/addCourse");
 };
@@ -65,27 +67,21 @@ const selectIndexNav = async (id: Number) => {
 };
 
 const testWs = () => {
-  connectWs(12100000001, 1059437675).onMessage((res) => {
+  connectWs(111, 3904164167).onMessage((res) => {
     console.log(res.data);
   });
 };
 const deleteWs = () => {
-  Delete("/ws/delete/conn?roomID=1059437675&ID=12100000001");
+  Delete("/ws/delete/conn?roomID=482589151&ID=111");
 };
-onLoad(() => {
+onLoad(async () => {
   const info = uni.getStorageSync("USER_INFO");
 
   if (info) {
     userInfo.value = info;
   }
 
-  get("/user/get/course", {
-    ID: userInfo.value.userID,
-    name: userInfo.value.userName,
-    role: userInfo.value.role === "学生" ? "student" : " teacher",
-  }).then(({ data }) => {
-    courseList.value = data?.data?.course;
-  });
+  await getAllCourseMsg();
 });
 </script>
 

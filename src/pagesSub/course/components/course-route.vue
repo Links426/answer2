@@ -25,6 +25,10 @@
 </template>
 <script setup lang="ts">
 import { to } from "@/hooks/toUrl";
+import { userStore } from "@/stores/userStore";
+const useUserStore = userStore();
+const { userInfo, courseList, currentRoomMessage, currentCourseMessage } =
+  storeToRefs(useUserStore);
 const props = withDefaults(
   defineProps<{
     id: string | number;
@@ -59,6 +63,9 @@ const time = computed(() => {
 });
 
 const toClassRoom = (id: string | number) => {
+  currentRoomMessage.value = currentCourseMessage.value.room.find(
+    (item: { roomID: string | number }) => item.roomID == id
+  );
   to(`/pagesSub/classroom/classroom?roomID=${id}&name=${props.name}`);
 };
 </script>

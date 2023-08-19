@@ -67,6 +67,10 @@
           "style": {
             "navigationBarTitleText": "设置用户信息"
           }
+        },
+        {
+          "path": "room/addRoom",
+          "style": { "navigationBarTitleText": "添加单节课程" }
         }
       ]
     }

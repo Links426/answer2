@@ -15,7 +15,7 @@
         <ClassroomQuestion
           :id="index"
           :index="index"
-          @my-click="toQuestion(question?.courseRecord)"
+          @my-click="toQuestion(question)"
           v-show="
             selectClassroomId === ClassroomPage.ALL ||
             selectClassroomId === ClassroomPage.QUESTIONS
@@ -43,10 +43,10 @@ import {
 import { to } from "@/hooks/toUrl";
 import { userStore } from "@/stores/userStore";
 
-import { get } from "@/api/request";
+import { get, post } from "@/api/request";
 
 const useUserStore = userStore();
-const { currentQuestionData } = storeToRefs(useUserStore);
+const { currentQuestionData, currentRoomMessage } = storeToRefs(useUserStore);
 const selectClassroomId = ref(ClassroomPage.ALL);
 
 const toClassroomPage = (id: number) => {
@@ -61,14 +61,30 @@ onLoad((options: any) => {
   uni.setNavigationBarTitle({
     title: options.name,
   });
-  // 获取所有历史消息
-  get(`/user/get/course/task?roomID=${options.roomID}`).then((res) => {
-    classQuestionList.value = res?.data?.data;
+
+
+
+  post(
+    "/user/get/course/task",
+    {
+      roomID: currentRoomMessage.value.roomID,
+      sendID: currentRoomMessage.value.teacherID,
+      targetID: "",
+      recordType: "TeaPubRecord",
+    },
+    {
+      header: { "content-type": "application/json" },
+    }
+  ).then((res) => {
+    // 获取一节课里的所有问题
+    classQuestionList.value = res?.data?.data as any;
   });
 });
 const toQuestion = (data: any) => {
   to(`../../pagesSub/question/question`);
+
   currentQuestionData.value = data;
+
   console.log(data);
 };
 </script>
