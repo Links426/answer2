@@ -26,10 +26,12 @@ export interface ITokenRes {
 }
 
 export const getUserToken = async (code: string) => {
-  return await post<ITokenRes>("/login", { code }).then(async (res) => {
-    uni.setStorageSync("TOKEN_KEY", res.data.data);
-    return res;
-  });
+  return await post<ITokenRes>("/login", {}, { header: { code: code } }).then(
+    async (res) => {
+      uni.setStorageSync("TOKEN_KEY", res.data.data);
+      return res;
+    }
+  );
 };
 
 export const getUserInfo = async () => {

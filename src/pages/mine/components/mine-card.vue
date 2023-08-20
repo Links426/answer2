@@ -35,6 +35,7 @@ import MineButton from "@/pages/mine/components/mine-button.vue";
 import { userStore } from "@/stores/userStore";
 
 const useUserStore = userStore();
+const { getAllCourseMsg } = useUserStore;
 const { isBinding, userInfo } = storeToRefs(useUserStore);
 
 const changeUserStatus = async () => {
@@ -52,6 +53,7 @@ const changeUserStatus = async () => {
       } else {
         userInfo.value = res.data.userInfo![0];
 
+        getAllCourseMsg();
         showToast("获取信息成功");
         uni.setStorageSync("USER_INFO", userInfo.value);
       }

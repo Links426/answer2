@@ -35,8 +35,8 @@ import NButton from "@/components/n-button.vue";
 import { deepCopy } from "@/hooks/deepClone";
 import { back1 } from "@/hooks/toUrl";
 import { userStore } from "@/stores/userStore";
-
 const useUserStore = userStore();
+const { getAllCourseMsg } = useUserStore;
 const { isBinding, userInfo } = storeToRefs(useUserStore);
 
 const bindInfo = ref({
@@ -63,6 +63,7 @@ const bandingInfo = async () => {
     if (res.code === 200) {
       userInfo.value = res.data.data[0];
       uni.setStorageSync("USER_INFO", userInfo.value);
+      getAllCourseMsg();
       showToast("绑定成功");
       setTimeout(() => {
         back1();

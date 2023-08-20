@@ -21,6 +21,14 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const addClass = async () => {
       hooks_toUrl.to("/pagesSub/course/addCourse");
     };
+    const test = () => {
+      console.log(1);
+      common_vendor.index.login({
+        success: (res) => {
+          console.log(res);
+        }
+      });
+    };
     const selectIndexNav = async (id) => {
       if (id === 1) {
         await api_request.get("/user/get/course", {
@@ -35,7 +43,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       }
     };
     const testWs = () => {
-      api_websocket.connectWs(111, 3904164167).onMessage((res) => {
+      api_websocket.connectWs(111, 807077604).onMessage((res) => {
         console.log(res.data);
       });
     };
@@ -80,7 +88,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         h: common_vendor.o(deleteWs),
         i: common_vendor.p({
           content: "\u6D4B\u8BD5\u5220\u9664\u94FE\u63A5"
-        })
+        }),
+        j: common_vendor.o(test)
       };
     };
   }

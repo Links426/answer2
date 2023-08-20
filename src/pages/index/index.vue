@@ -29,6 +29,7 @@
 
           <NButton :content="'测试链接'" @my-click="testWs"></NButton>
           <NButton :content="'测试删除链接'" @my-click="deleteWs"></NButton>
+          <button @click="test">code</button>
         </div>
       </view>
     </scroll-view>
@@ -38,7 +39,7 @@
 import NavSelect from "@/components/nav-select.vue";
 import NButton from "@/components/n-button.vue";
 import IndexCourseCard from "@/pages/index/components/index-courseCard.vue";
-
+import { getUserCode } from "@/api/users/login";
 import { userStore } from "@/stores/userStore";
 import { indexSelectList } from "@/utils/index/index";
 import { to } from "@/hooks/toUrl";
@@ -50,6 +51,14 @@ const { userInfo, courseList } = storeToRefs(useUserStore);
 const { getAllCourseMsg } = useUserStore;
 const addClass = async () => {
   to("/pagesSub/course/addCourse");
+};
+const test = () => {
+  console.log(1);
+  uni.login({
+    success: (res) => {
+      console.log(res);
+    },
+  });
 };
 
 const selectIndexNav = async (id: Number) => {
@@ -67,7 +76,7 @@ const selectIndexNav = async (id: Number) => {
 };
 
 const testWs = () => {
-  connectWs(111, 3904164167).onMessage((res) => {
+  connectWs(111, 807077604).onMessage((res) => {
     console.log(res.data);
   });
 };

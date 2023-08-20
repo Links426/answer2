@@ -63,8 +63,9 @@ const time = computed(() => {
 });
 
 const toClassRoom = (id: string | number) => {
+  console.log(currentCourseMessage.value.room);
   currentRoomMessage.value = currentCourseMessage.value.room.find(
-    (item: { roomID: string | number }) => item.roomID == id
+    (item: { roomID: string | number }) => item?.roomID == id
   );
   to(`/pagesSub/classroom/classroom?roomID=${id}&name=${props.name}`);
 };
