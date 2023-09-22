@@ -73,10 +73,6 @@ const bandingInfo = async () => {
     }
   });
 };
-const userLogin = async () => {};
-onLoad(async () => {
-  userLogin();
-});
 </script>
 
 <style scoped>

@@ -34,6 +34,7 @@ import AInput from "./components/addCourse-input.vue";
 import NButton from "@/components/n-button.vue";
 import { get, post } from "@/api/request";
 import { userStore } from "@/stores/userStore";
+import { uuid } from "@/hooks/uuid";
 
 const useUserStore = userStore();
 const { userInfo } = storeToRefs(useUserStore);
@@ -74,11 +75,13 @@ const selCourses = (e: any) => {
 };
 
 const addCourse = async () => {
+  classDetail.value.courseName =
+    classDetail.value.courseName + "(cid:" + uuid() + ")";
   await post("/admin/course", toRaw(classDetail.value), {
     header: { "content-type": "application/json" },
   }).then((res) => {
     if (res.code === 200) {
-      getAllCourseMsg()
+      getAllCourseMsg();
       uni.showToast({
         title: "提交成功",
         icon: "success",

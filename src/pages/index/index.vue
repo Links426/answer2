@@ -1,17 +1,39 @@
 <template>
   <view w-full h-100vh flex flex-col>
+    <div
+      w-full
+      h-30px
+      v-if="inClassRoom"
+      @click="
+        to(
+          `/pagesSub/classroom/classroom?roomID=${inClassRoom?.roomID}&name=${
+            inClassRoom?.detail || '未设置名称'
+          }&teacherID=${inClassRoom?.teacherID}`
+        )
+      "
+    >
+      {{ inClassRoom ? "您当前有正在上的课，点击跳转 -> " : "" }}
+    </div>
+
     <view class="carousel"></view>
     <NavSelect
       :select-options="indexSelectList"
       :defaultOption="1"
       @my-click="selectIndexNav"
     />
-    <scroll-view scroll-y="true" class="scroll-content">
+    <scroll-view
+      :scroll-y="true"
+      :scroll-with-animation="true"
+      :refresher-enabled="true"
+      :refresher-triggered="IndexRefreshTrigger"
+      @refresherrefresh="handleRefreshIndexList"
+      class="scroll-content"
+    >
       <view w-full pt-32rpx flex flex-col items-center>
         <div>
           <IndexCourseCard
             :teacherName="course?.teaName"
-            :teachClass="course?.academy"
+            :teachClass="course?.class"
             :title="course?.courseName"
             :teacher-avater="course?.avatarURL"
             v-for="(course, index) in courseList"
@@ -25,11 +47,8 @@
           <NButton
             :content="'没有课程？立即添加'"
             @my-click="addClass"
+            v-if="userInfo.role === '教师'"
           ></NButton>
-
-          <NButton :content="'测试链接'" @my-click="testWs"></NButton>
-          <NButton :content="'测试删除链接'" @my-click="deleteWs"></NButton>
-          <button @click="test">code</button>
         </div>
       </view>
     </scroll-view>
@@ -39,19 +58,28 @@
 import NavSelect from "@/components/nav-select.vue";
 import NButton from "@/components/n-button.vue";
 import IndexCourseCard from "@/pages/index/components/index-courseCard.vue";
-import { getUserCode } from "@/api/users/login";
+
 import { userStore } from "@/stores/userStore";
 import { indexSelectList } from "@/utils/index/index";
 import { to } from "@/hooks/toUrl";
 import { Delete, get } from "@/api/request";
 import { connectWs } from "@/api/websocket";
-
 const useUserStore = userStore();
 const { userInfo, courseList } = storeToRefs(useUserStore);
-const { getAllCourseMsg } = useUserStore;
+const { getAllCourseMsg, getAllQuestion } = useUserStore;
+const IndexRefreshTrigger = ref(false);
+
+const handleRefreshIndexList = async () => {
+  IndexRefreshTrigger.value = true;
+  await getAllCourseMsg().then((res) => {
+    IndexRefreshTrigger.value = false;
+  });
+};
+
 const addClass = async () => {
   to("/pagesSub/course/addCourse");
 };
+
 const test = () => {
   console.log(1);
   uni.login({
@@ -83,14 +111,37 @@ const testWs = () => {
 const deleteWs = () => {
   Delete("/ws/delete/conn?roomID=482589151&ID=111");
 };
+
+const inClassRoom = ref();
+
 onLoad(async () => {
   const info = uni.getStorageSync("USER_INFO");
 
   if (info) {
     userInfo.value = info;
   }
-
   await getAllCourseMsg();
+  // 获取当前时间戳
+  const currentTimeStamp = Date.now();
+  // 获取原始数组
+  let list = toRaw(courseList.value);
+  // 遍历数组中的每个课程对象
+  list?.forEach((course) => {
+    // 如果课程对象有room属性
+    if (course.room) {
+      // 遍历room数组中的每个房间对象
+      course.room.forEach((room: { startTime: number; endTime: number }) => {
+        // 如果房间对象有startTime属性，并且当前时间在开始时间和结束时间之间
+        if (
+          room.startTime &&
+          room.startTime <= currentTimeStamp &&
+          room.endTime >= currentTimeStamp
+        ) {
+          inClassRoom.value = room;
+        }
+      });
+    }
+  });
 });
 </script>
 

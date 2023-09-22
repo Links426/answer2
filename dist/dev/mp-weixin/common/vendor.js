@@ -7029,7 +7029,6 @@ const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
 const onUnload = /* @__PURE__ */ createHook(ON_UNLOAD);
 exports.Pinia = Pinia;
 exports._export_sfc = _export_sfc;
-exports.computed$1 = computed$1;
 exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
 exports.defineComponent = defineComponent;

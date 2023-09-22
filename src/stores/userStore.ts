@@ -1,4 +1,4 @@
-import { get } from "@/api/request";
+import { get, post } from "@/api/request";
 import { defineStore } from "pinia";
 
 export interface IUserInfo {
@@ -31,7 +31,10 @@ export const userStore = defineStore("user", () => {
   // 课程内容
   const courseList = ref<Array<any>>([]);
 
-  const currentRoomMessage = ref();
+  const currentRoomMessage = ref<{
+    roomID: string | number;
+    teacherID: string | number;
+  }>({ roomID: "", teacherID: "" });
   const currentCourseMessage = ref();
 
   const currentQuestionData = ref();
@@ -43,6 +46,30 @@ export const userStore = defineStore("user", () => {
     });
     courseList.value = data?.data?.course;
   };
+
+  const transportRoomID = ref();
+  const classQuestionList = ref([]);
+
+  const getAllQuestion = (
+    roomID: number | string,
+    teacherID: number | string
+  ) => {
+    return post(
+      "/user/get/course/task",
+      {
+        roomID: currentRoomMessage?.value?.roomID || roomID,
+        sendID: currentRoomMessage?.value?.teacherID || teacherID,
+        targetID: "",
+        recordType: "TeaPubRecord",
+      },
+      {
+        header: { "content-type": "application/json" },
+      }
+    ).then((res) => {
+      // 获取一节课里的所有问题
+      classQuestionList.value = res?.data?.data as any;
+    });
+  };
   return {
     isBinding,
     userInfo,
@@ -51,5 +78,8 @@ export const userStore = defineStore("user", () => {
     currentCourseMessage,
     currentRoomMessage,
     getAllCourseMsg,
+    transportRoomID,
+    classQuestionList,
+    getAllQuestion,
   };
 });
