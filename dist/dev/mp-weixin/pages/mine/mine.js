@@ -10,10 +10,30 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "mine",
   setup(__props) {
     const settingList = [
-      { id: 0, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
-      { id: 1, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
-      { id: 2, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" },
-      { id: 3, content: "\u8BBE\u7F6E", icon: "icon-shezhi", url: "/pagesSub/setting/setting" }
+      {
+        id: 0,
+        content: "\u8BBE\u7F6E",
+        icon: "icon-shezhi",
+        url: "/pagesSub/setting/setting"
+      },
+      {
+        id: 1,
+        content: "\u8BBE\u7F6E",
+        icon: "icon-shezhi",
+        url: "/pagesSub/setting/setting"
+      },
+      {
+        id: 2,
+        content: "\u8BBE\u7F6E",
+        icon: "icon-shezhi",
+        url: "/pagesSub/setting/setting"
+      },
+      {
+        id: 3,
+        content: "\u8BBE\u7F6E",
+        icon: "icon-shezhi",
+        url: "/pagesSub/setting/setting"
+      }
     ];
     return (_ctx, _cache) => {
       return {

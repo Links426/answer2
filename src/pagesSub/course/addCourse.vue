@@ -1,101 +1,119 @@
 <template>
-	<view px-32rpx py-72rpx>
-		<view mb-52rpx>
-			<AInput
-				:title="'课程名'"
-				:placeholder="'请输入课程名'"
-				v-model="classDetail.courseName"
-			></AInput>
-		</view>
-		<view>
-			<view class="mb-36rpx text-40rpx font-bold text-#333">班级</view>
-			<view class="uni-list">
-				<checkbox-group @change="selCourses">
-					<label
-						class="uni-list-cell uni-list-cell-pd"
-						v-for="(item, key) in coursesList"
-						:key="key"
-					>
-						<view>
-							<checkbox :value="item.value" :checked="item.checked" />
-						</view>
-						<view ml-12rpx>{{ item.name }}</view>
-					</label>
-				</checkbox-group>
-			</view>
-		</view>
-	</view>
-	<view flex justify-center mt-28rpx
-		><NButton :content="'添加课程'" @my-click="addCourse"></NButton
-	></view>
+  <view px-32rpx py-72rpx>
+    <view mb-52rpx>
+      <AInput
+        :title="'课程名'"
+        :placeholder="'请输入课程名'"
+        v-model="classDetail.courseName"
+      ></AInput>
+    </view>
+    <view>
+      <view class="mb-36rpx text-40rpx font-bold text-#333">班级</view>
+      <view class="uni-list">
+        <checkbox-group @change="selCourses">
+          <label
+            class="uni-list-cell uni-list-cell-pd"
+            v-for="(item, key) in coursesList"
+            :key="key"
+          >
+            <view>
+              <checkbox :value="item.value" :checked="item.checked" />
+            </view>
+            <view ml-12rpx>{{ item.name }}</view>
+          </label>
+        </checkbox-group>
+      </view>
+    </view>
+  </view>
+  <view flex justify-center mt-28rpx
+    ><NButton :content="'添加课程'" @my-click="addCourse"></NButton
+  ></view>
 </template>
 <script setup lang="ts">
-import AInput from './components/addCourse-input.vue'
-import NButton from '@/components/n-button.vue'
-import { get, post } from '@/api/request'
-import { userStore } from '@/stores/userStore'
+import AInput from "./components/addCourse-input.vue";
+import NButton from "@/components/n-button.vue";
+import { get, post } from "@/api/request";
+import { userStore } from "@/stores/userStore";
+import { uuid } from "@/hooks/uuid";
 
-const useUserStore = userStore()
-const { userInfo } = storeToRefs(useUserStore)
+const useUserStore = userStore();
+const { userInfo } = storeToRefs(useUserStore);
+const { getAllCourseMsg } = useUserStore;
 interface IClassDetail {
-	academy: string
-	class: string[]
-	courseName: string
-	teaName: string
-	teaNum: string
+  academy: string;
+  class: string[];
+  courseName: string;
+  teaName: string;
+  teaNum: string;
 }
 const classDetail = ref<IClassDetail>({
-	academy: userInfo.value.academy,
-	teaNum: userInfo.value.userID + '',
-	teaName: userInfo.value.userName,
-	courseName: '',
-	class: [],
-})
-const coursesList = ref<Array<{ name: String; value: String; checked: boolean }>>([])
+  academy: userInfo.value.academy,
+  teaNum: "111",
+  teaName: userInfo.value.userName,
+  courseName: "",
+  class: [],
+});
+const coursesList = ref<
+  Array<{ name: String; value: String; checked: boolean }>
+>([]);
 
 const getClasses = async () => {
-	const { data } = (await get<{ code: number; data: Array<String> }>('/api/allclass'))
-		.data
+  const { data } = (
+    await get<{ code: number; data: Array<String> }>("/user/get/all/class")
+  ).data;
 
-	coursesList.value = data.map((item) => {
-		return {
-			name: item,
-			value: item,
-			checked: false,
-		}
-	})
-}
+  coursesList.value = data.map((item) => {
+    return {
+      name: item,
+      value: item,
+      checked: false,
+    };
+  });
+};
 const selCourses = (e: any) => {
-	classDetail.value.class = e.detail.value
-}
+  classDetail.value.class = e.detail.value;
+};
 
 const addCourse = async () => {
-	await post('/api/course', toRaw(classDetail.value), {
-		header: { 'content-type': 'application/json' },
-	})
-}
+  classDetail.value.courseName =
+    classDetail.value.courseName + "(cid:" + uuid() + ")";
+  await post("/admin/course", toRaw(classDetail.value), {
+    header: { "content-type": "application/json" },
+  }).then((res) => {
+    if (res.code === 200) {
+      getAllCourseMsg();
+      uni.showToast({
+        title: "提交成功",
+        icon: "success",
+      });
+      setTimeout(() => {
+        uni.navigateBack({ delta: 1 });
+      }, 1000);
+    }
+  });
+};
 
 onLoad(() => {
-	getClasses()
-})
+  getClasses();
+});
 </script>
 
 <style scoped>
 .addCourse-picker {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #86909c;
-	height: 40rpx;
-	padding: 24rpx 0;
-	border-radius: 8rpx;
-	border: 4rpx dotted #86909c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #86909c;
+  height: 40rpx;
+  padding: 24rpx 0;
+  border-radius: 8rpx;
+  border: 4rpx dotted #86909c;
 }
 .uni-list-cell {
-	display: flex;
-	align-items: center;
-	padding: 24rpx;
-	border-radius: 12rpx;
-	background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  background-color: #f8f8f8;
 }
 </style>

@@ -8,21 +8,18 @@ if (!Math) {
   "./pagesSub/course/course.js";
   "./pagesSub/course/addCourse.js";
   "./pagesSub/classroom/classroom.js";
+  "./pagesSub/classroom/classroom-publish.js";
   "./pagesSub/question/question.js";
   "./pagesSub/setting/setting.js";
   "./pagesSub/mineSub/mineSub-setInfo.js";
+  "./pagesSub/room/addRoom.js";
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "App",
   setup(__props) {
-    common_vendor.onLaunch(() => {
-      console.log("App Launch");
-    });
     common_vendor.onShow(() => {
-      console.log("App Show");
     });
-    common_vendor.onHide(() => {
-      console.log("App Hide");
+    common_vendor.onUnload(() => {
     });
     return () => {
     };

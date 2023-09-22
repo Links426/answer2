@@ -1,20 +1,12 @@
 <script setup lang="ts">
-onLaunch(() => {
-	// eslint-disable-next-line no-console
-	console.log('App Launch')
-})
-onShow(() => {
-	// eslint-disable-next-line no-console
-	console.log('App Show')
-})
-onHide(() => {
-	// eslint-disable-next-line no-console
-	console.log('App Hide')
-})
+onShow(() => {});
+onUnload(() => {
+  // eslint-disable-next-line no-console
+});
 </script>
 
 <style>
 view {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>

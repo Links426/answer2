@@ -1,110 +1,132 @@
-import BaseRequestConfig from '@/config/config'
+import BaseRequestConfig from "@/config/config";
 
 type RequestData<T> = {
-	methodType?: 'GET' | 'POST'
-	data?: T
-	url: string
-}
+  methodType?: "GET" | "POST" | "DELETE";
+  data?: T;
+  url: string;
+};
 
 type RequestConfig = {
-	port?: string
-	baseUrl?: string
-	prefix?: string
-	header?: any
-	loading?: boolean
-	dataType?: string
-}
+  port?: string;
+  baseUrl?: string;
+  prefix?: string;
+  header?: any;
+  loading?: boolean;
+  dataType?: string;
+};
 
 type RequestReturnData<T> = {
-	code: 200 | 500 | number
-	data: T
-}
+  code: 200 | 500 | number;
+  data: T;
+};
 
 type Request = <T extends AnyObject, R extends AnyObject = AnyObject>(
-	data: RequestData<T>,
-	config?: RequestConfig
-) => Promise<RequestReturnData<R>>
+  data: RequestData<T>,
+  config?: RequestConfig
+) => Promise<RequestReturnData<R>>;
 
-export const TOKEN_KEY = 'USER-TOKEN'
+export const TOKEN_KEY = "USER-TOKEN";
 
 export const RequestMethod: Request = (
-	{ methodType = 'GET', data = {}, url = '' },
-	{
-		baseUrl = BaseRequestConfig.baseUrl,
-		port = BaseRequestConfig.port,
-		prefix = BaseRequestConfig.prefix,
-		header = { 'content-type': 'application/x-www-form-urlencoded' },
-		loading = true,
-		dataType = 'json',
-	} = {}
+  { methodType = "GET", data = {}, url = "" },
+  {
+    baseUrl = BaseRequestConfig.baseUrl,
+    port = BaseRequestConfig.port,
+    prefix = BaseRequestConfig.prefix,
+    header = { "content-type": "application/x-www-form-urlencoded" },
+    loading = true,
+    dataType = "json",
+  } = {}
 ) => {
-	const token = uni.getStorageSync('TOKEN_KEY')
+  const token = uni.getStorageSync("TOKEN_KEY");
 
-	if (token) {
-		header.token = token
-	}
-	uni.showLoading({
-		title: '加载中',
-	})
+  if (token) {
+    header.token = token;
+  }
+  uni.showLoading({
+    title: "加载中",
+  });
 
-	console.log('request', {
-		methodType,
-		data,
-		header,
-		url: `${baseUrl}:${port}${prefix}${url}`,
-	})
-	return new Promise((resolve, reject) => {
-		const requestClose = uni.request({
-			url: `${baseUrl}:${port}${url}`,
-			data,
-			header,
-			method: methodType,
-			timeout: 3000,
-			dataType,
-			success: (res) => {
-				const resultData: any = res.data
-				console.log('response', {
-					resultData,
-					url,
-				})
-				const resultCode = Number.parseInt(resultData.code)
-				uni.hideLoading()
-				resolve({
-					code: resultCode,
-					data: res.data as any,
-				})
-			},
-			fail: (err) => {
-				reject(err)
-			},
-		})
-	})
-}
+  console.log("request", {
+    methodType,
+    data,
+    header,
+    url: `${baseUrl}:${port}/${prefix}${url}`,
+  });
+  return new Promise((resolve, reject) => {
+    const requestClose = uni.request({
+      url: `${baseUrl}:${port}${url}`,
+      data,
+      header,
+      method: methodType,
+      timeout: 3000,
+      dataType,
+      success: (res) => {
+        const resultData: any = res.data;
+        console.log("response", {
+          resultData,
+          url,
+        });
+        const resultCode = Number.parseInt(resultData.code);
+        uni.hideLoading();
+        resolve({
+          code: resultCode,
+          data: res.data as any,
+        });
+      },
+      fail: (err) => {
+        reject(err);
+      },
+    });
+  });
+};
 
-export const get = <R extends AnyObject = AnyObject, T extends AnyObject = AnyObject>(
-	url: string,
-	data?: T,
-	config?: RequestConfig
+export const get = <
+  R extends AnyObject = AnyObject,
+  T extends AnyObject = AnyObject
+>(
+  url: string,
+  data?: T,
+  config?: RequestConfig
 ) =>
-	RequestMethod<T, R>(
-		{
-			methodType: 'GET',
-			url,
-			data,
-		},
-		config
-	)
+  RequestMethod<T, R>(
+    {
+      methodType: "GET",
+      url,
+      data,
+    },
+    config
+  );
 
-export const post = <R extends AnyObject = AnyObject, T extends AnyObject = AnyObject>(
-	url: string,
-	data?: T,
-	config?: RequestConfig
+export const post = <
+  R extends AnyObject = AnyObject,
+  T extends AnyObject = AnyObject
+>(
+  url: string,
+  data?: T,
+  config?: RequestConfig
 ) =>
-	RequestMethod<T, R>(
-		{
-			methodType: 'POST',
-			url,
-			data,
-		},
-		config
-	)
+  RequestMethod<T, R>(
+    {
+      methodType: "POST",
+      url,
+      data,
+    },
+    config
+  );
+export const Delete = <
+  R extends AnyObject = AnyObject,
+  T extends AnyObject = AnyObject
+>(
+  url: string,
+  data?: T,
+  config?: RequestConfig
+) =>
+  RequestMethod<T, R>(
+    {
+      methodType: "DELETE",
+      url,
+      data,
+    },
+    config
+  );
